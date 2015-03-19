@@ -1,0 +1,239 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 81.0,
+		"selected_items":
+		[
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"instl",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 400.0
+	},
+	"console":
+	{
+		"height": 126.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = 'eb2297e1a458f27d836c04bb0cbaf282' + 'd0e7a3098092775ccb37ca9d6b2e4b7d'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/D/Interview tips n tricks.txt",
+		"/D/Napomene.txt",
+		"/D/Programi/Adobe Acrobat XI Pro 11.0.9 Multilanguage [ChingLiu]/ChingLiu.Install.Notes.nfo",
+		"/D/The Somethings/Chords/AM/Why You Only Call Me When You High.txt",
+		"/D/The Somethings/Chords/Blur - Popscene.txt",
+		"/D/Google Drive/Procedural Generation of Settlements/Literatura/links.txt",
+		"/C/Users/Nemanja/Desktop/Temp/CudaStart/DSZ_CUDA/CudaStart/CudaStart/log.txt",
+		"/D/Programi/Total_War_Shogun_2_READNFO-FLT/fairlight.nfo",
+		"/F/FairLight/fairlight.nfo",
+		"/C/Users/Nemanja/Downloads/Unreal Paris 1.3 - Windows 32 Bit/ReadMeFirst.txt",
+		"/E/Program Files/NVIDIA Corporation/CUDA Samples/v6.5/3_Imaging/histogram/readme.txt",
+		"/E/Program Files/NVIDIA Corporation/CUDA Samples/v6.5/0_Simple/simpleAtomicIntrinsics/simpleAtomicIntrinsics.cu",
+		"/E/Program Files/NVIDIA Corporation/CUDA Samples/v6.5/0_Simple/simpleAtomicIntrinsics/simpleAtomicIntrinsics_kernel.cuh",
+		"/E/Program Files/NVIDIA Corporation/CUDA Samples/v6.5/0_Simple/simpleAtomicIntrinsics/doc/readme.txt",
+		"/E/Program Files/NVIDIA Corporation/CUDA Samples/v6.5/0_Simple/simpleAtomicIntrinsics/readme.txt",
+		"/D/Programi/Adobe Premiere Pro CC 2014 v8.0.1 (x64-Patch) [ChingLiu]/How To Open Nfo Files.txt",
+		"/D/Programi/Adobe Premiere Pro CC 2014 v8.0.1 (x64-Patch) [ChingLiu]/ChingLiu.Install.Notes.nfo",
+		"/D/New Text Document.txt",
+		"/D/Programi/Adobe Premiere Pro CS6 6.0.0 LS7 Multilanguage [ChingLiu]/HowToInstall.txt",
+		"/D/The Somethings/Probe/lol.txt",
+		"/D/Mega/Nordeus domaci/notes.txt",
+		"/D/Ostalo/2GO.txt",
+		"/D/CV/prica-za-intervju.txt",
+		"/D/Mega/Nordeus domaci/2Do.txt",
+		"/D/The Somethings/Chords/Fluorescent Adolescent.txt",
+		"/D/The Somethings/Chords/No1 Party Anthem.txt",
+		"/D/The Somethings/Chords/Crying Lighting.txt",
+		"/D/The Somethings/Chords/Why You Only Call Me When You High.txt",
+		"/D/The Somethings/Chords/Hold On We're Going Home.txt",
+		"/D/Ostalo/views.txt",
+		"/D/Programi/Adobe Photoshop CC 2014 (64 bit) (Crack) [ChingLiu]/ChingLiu.Install.Notes.nfo",
+		"/D/The Somethings/Chords/Stop The World Because I wanna Get Off With You.txt",
+		"/D/The Somethings/Chords/Do I Wanna Know.txt",
+		"/C/Users/Nemanja/Downloads/Arctic-Monkeys-No.1-Party-Anthem.txt",
+		"/E/Program Files (x86)/Ibb and Obb/constants/settings.txt",
+		"/D/Programi/Visual Studio 2012/key.txt",
+		"/D/The Somethings/Chords/Knee Socks.txt",
+		"/C/Users/Nemanja/Desktop/New folder/LGPL.txt",
+		"/E/Program Files (x86)/Ibb and Obb/constants/constants.txt",
+		"/D/CV/Engleski/Nemanja Lucic CV raw.txt",
+		"/C/Users/Nemanja/Desktop/Do I Wanna Know.txt",
+		"/C/Users/Nemanja/Desktop/No1 Party Anthem.txt",
+		"/C/Users/Nemanja/Desktop/Hold On We're Going Home.txt",
+		"/C/Users/Nemanja/Desktop/Knee Socks.txt",
+		"/D/Programi/Ibb.and.Obb-HI2U/hi2u.nfo",
+		"/C/Users/Nemanja/Desktop/New folder/LICENSE.txt",
+		"/C/Users/Nemanja/Desktop/Projektic/Projektic/ulaz.dat",
+		"/C/Users/Nemanja/Desktop/Projektic/Projektic/izlaz2.dat",
+		"/C/Users/Nemanja/Desktop/Projektic/Projektic/izlaz1.dat",
+		"/C/Users/Nemanja/Desktop/adas.txt",
+		"/C/Users/Nemanja/Desktop/final/code/test benches/testInstrukcije.txt",
+		"/C/Users/Nemanja/Desktop/VLSI projekat/code/packages/pkg_myDeclarations.vhd",
+		"/C/Users/Nemanja/Desktop/VLSI projekat/code/entities/instrCache.vhd",
+		"/C/Users/Nemanja/Desktop/VLSI projekat/code/entities/if_stage.vhd",
+		"/C/Users/Nemanja/Desktop/final/code/test benches/tb_cpu.vhd",
+		"/D/Mega/Faks/7. semestar/VLSI/asm/test.txto",
+		"/D/Mega/Faks/7. semestar/VLSI/asm/test.txt",
+		"/C/Users/Nemanja/Desktop/VLSI projekat/code/entities/test benches/testInstrukcije.txt",
+		"/C/Users/Nemanja/Desktop/VLSI projekat/code/entities/test benches/tb_cpu.vhd",
+		"/C/Users/Nemanja/Desktop/VLSI projekat/code/entities/test benches/javni_test_inst_in.txt",
+		"/C/Users/Nemanja/Desktop/VLSI projekat/code/entities/test benches/javni_test_data_in.txt",
+		"/C/Users/Nemanja/Desktop/VLSI projekat/code/entities/test benches/logFile.txt",
+		"/C/Users/Nemanja/Desktop/VLSI projekat/code/entities/test benches/dataMemory.txt",
+		"/C/Users/Nemanja/Desktop/VLSI projekat/code/entities/entities/branch_fu.vhd",
+		"/D/Mega/Faks/7. semestar/VLSI/determinante.txt",
+		"/C/Users/Nemanja/Downloads/MIPS feb 2015.txt",
+		"/C/Users/Nemanja/Downloads/memstate.txt"
+	],
+	"find":
+	{
+		"height": 21.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"Am",
+			"C",
+			"Em",
+			"Em\n",
+			"?\n"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"Hm",
+			"D",
+			"F#m"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 21.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"project": "VLSI_Sublime_Project.sublime-project",
+	"replace":
+	{
+		"height": 38.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

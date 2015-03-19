@@ -1,0 +1,6 @@
+*.db_info
+*.ipinfo
+*.flock
+*.sci
+*.qpf
+*.qsf
