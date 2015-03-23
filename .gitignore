@@ -33,3 +33,15 @@ db/VLSI_Project.smart_action.txt
 db/VLSI_Project.lpc.txt
 *.sublime-project
 VLSI_Sublime_Project.sublime-project
+*.mti
+*.mpf
+*.vlf
+*.dbs
+*.prw
+*.dbs
+Code/Modelsim/
+db/
+output_files/
+incremental_db/
+*.qws
+*.srf

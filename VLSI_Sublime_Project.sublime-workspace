@@ -3,17 +3,125 @@
 	{
 		"selected_items":
 		[
+			[
+				"IF_ID_out",
+				"IF_ID_out_signal"
+			],
+			[
+				"ID_IF_",
+				"ID_IF_out_signal"
+			],
+			[
+				"out_",
+				"out_instr_cache_addr"
+			],
+			[
+				"Instr_cache",
+				"Instr_Cahce_addr"
+			],
+			[
+				"instrCach",
+				"Instr_Cache_data"
+			],
+			[
+				"std",
+				"std_logic_1164"
+			],
+			[
+				"to",
+				"to_integer"
+			],
+			[
+				"in_",
+				"in_if_stage"
+			],
+			[
+				"ree",
+				"reset_or_flush"
+			],
+			[
+				"reset",
+				"reset_or_flush"
+			],
+			[
+				"std_",
+				"std_ulogic"
+			],
+			[
+				"std_ul",
+				"std_ulogic"
+			],
+			[
+				"instr_cache",
+				"instr_cache_addr"
+			],
+			[
+				"instr_cac",
+				"instr_cache_data"
+			],
+			[
+				"Instr_cac",
+				"instr_cache_data"
+			],
+			[
+				"Instr",
+				"Instruction_Cache"
+			],
+			[
+				"OM",
+				"OM_Addr_t"
+			],
+			[
+				"std_u",
+				"std_ulogic"
+			],
+			[
+				"arc",
+				"architecture"
+			],
+			[
+				"std_ulo",
+				"std_ulogic_vector"
+			],
+			[
+				"OM_A",
+				"OM_Addr_t"
+			],
+			[
+				"std_logic",
+				"std_logic_1164"
+			]
 		]
 	},
 	"buffers":
 	[
+		{
+			"file": "Code/Entities/IF_Stage.vhd",
+			"settings":
+			{
+				"buffer_size": 1438,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "Code/Packets/pkg_Components.vhd",
+			"settings":
+			{
+				"buffer_size": 1350,
+				"line_ending": "Windows"
+			}
+		}
 	],
 	"build_system": "",
 	"command_palette":
 	{
-		"height": 81.0,
+		"height": 58.0,
 		"selected_items":
 		[
+			[
+				"vhdl",
+				"Set Syntax: VHDL"
+			],
 			[
 				"install",
 				"Package Control: Install Package"
@@ -42,11 +150,38 @@
 		"side_bar_visible": false,
 		"status_bar_visible": false
 	},
+	"expanded_folders":
+	[
+		"/C/Users/Nemanja/Desktop/VLSI Projekat/VLSI-Projekat/Code",
+		"/C/Users/Nemanja/Desktop/VLSI Projekat/VLSI-Projekat/Code/Entities",
+		"/C/Users/Nemanja/Desktop/VLSI Projekat/VLSI-Projekat/Code/ModelSim",
+		"/C/Users/Nemanja/Desktop/VLSI Projekat/VLSI-Projekat/Code/Packets",
+		"/C/Users/Nemanja/Desktop/VLSI Projekat/VLSI-Projekat/Code/Test"
+	],
 	"file_history":
 	[
+		"/C/Users/Nemanja/Desktop/VLSI Projekat/VLSI-Projekat/Code/Packets/pkg_Declarations.vhd",
+		"/C/Users/Nemanja/Desktop/VLSI Projekat/VLSI-Projekat/Code/Entities/ID_Stage.vhd",
+		"/C/Users/Nemanja/Desktop/VLSI Projekat/VLSI-Projekat/Code/Entities/FIFO_Controler.vhd",
+		"/C/Users/Nemanja/Desktop/VLSI Projekat/VLSI-Projekat/Code/Packets/pkg_Components.vhd",
+		"/C/Users/Nemanja/Desktop/VLSI Projekat/VLSI-Projekat/Code/Entities/IF_Stage.vhd",
+		"/C/Users/Nemanja/Desktop/VLSI Projekat/VLSI-Projekat/Code/Test/tb_test.vhd",
+		"/C/Users/Nemanja/Desktop/VLSI Projekat/VLSI-Projekat/Code/Entities/CPU.vhd",
+		"/C/Users/Nemanja/Desktop/VLSI Projekat/VLSI-Projekat/Code/Test/Instr_Cache.vhd",
+		"/C/Users/Nemanja/Desktop/VLSI Projekat/VLSI-Projekat/Code/ModelSim/testInstrukcije.txt",
+		"/C/Users/Nemanja/Desktop/VLSI Projekat/VLSI-Projekat/Code/Test/testInstrukcije.txt",
+		"/C/Users/Nemanja/Desktop/VLSI Projekat/VLSI-Projekat/Code/Packets/pkg_Functions.vhd",
+		"/D/Programi/Adobe Acrobat XI Pro 11.0.9 Multilanguage [ChingLiu]/ChingLiu.Install.Notes.nfo",
 		"/D/Interview tips n tricks.txt",
 		"/D/Napomene.txt",
-		"/D/Programi/Adobe Acrobat XI Pro 11.0.9 Multilanguage [ChingLiu]/ChingLiu.Install.Notes.nfo",
+		"/D/Programiranje projekti/VHDL/VLSI_Projekat/code/packages/pkg_stringFunctions.vhd",
+		"/C/Users/Nemanja/Desktop/VLSI front end/processor_pkg.vhd",
+		"/C/Users/Nemanja/Desktop/VLSI Projekat/VLSI-Projekat/.gitignore",
+		"/D/Programiranje projekti/VHDL/VLSI_Projekat/code/packages/pkg_myDeclarations.vhd",
+		"/D/Programiranje projekti/VHDL/VLSI_Projekat/code/entities/if_stage.vhd",
+		"/D/Programiranje projekti/VHDL/VLSI_Projekat/code/packages/pkg_decodeFunctions.vhd",
+		"/C/Users/Nemanja/Desktop/VLSI Projekat/VLSI-Projekat/VLSI_Sublime_Project.sublime-project",
+		"/D/Programiranje projekti/VHDL/VLSI_Projekat/vlsi_projekat.sublime-project",
 		"/D/The Somethings/Chords/AM/Why You Only Call Me When You High.txt",
 		"/D/The Somethings/Chords/Blur - Popscene.txt",
 		"/D/Google Drive/Procedural Generation of Settlements/Literatura/links.txt",
@@ -114,7 +249,7 @@
 	],
 	"find":
 	{
-		"height": 21.0
+		"height": 34.0
 	},
 	"find_in_files":
 	{
@@ -128,6 +263,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"string",
 			"Am",
 			"C",
 			"Em",
@@ -153,8 +289,73 @@
 	"groups":
 	[
 		{
+			"selected": 0,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "Code/Entities/IF_Stage.vhd",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1438,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1402,
+								1402
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/VHDL/Syntaxes/VHDL.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 117.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 1,
+					"file": "Code/Packets/pkg_Components.vhd",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1350,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								717,
+								717
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/VHDL/Syntaxes/VHDL.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": -0.0,
+						"translation.y": 39.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				}
 			]
 		}
 	],
@@ -164,7 +365,7 @@
 	},
 	"input":
 	{
-		"height": 0.0
+		"height": 29.0
 	},
 	"layout":
 	{
@@ -175,11 +376,18 @@
 				0,
 				1,
 				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
 			]
 		],
 		"cols":
 		[
 			0.0,
+			0.5,
 			1.0
 		],
 		"rows":
@@ -231,7 +439,7 @@
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 150.0,
+	"side_bar_width": 237.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

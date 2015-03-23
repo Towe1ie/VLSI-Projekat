@@ -17,14 +17,18 @@ entity IF_Stage is
 	);
 	port
 	(
-		jump, reset, clk : in std_ulogic;
-		some_output : out OM_Addr_t
-	);
+		in_instr_cache_data : in Instr_Cache_data;
+		out_instr_cache_addr : out Instr_Cahce_addr;
 
+		in_id_stage : in ID_IF_out;
+		out_id_stage : out IF_ID_out;
+
+		jump, reset, clk : in std_ulogic
+	);
 end entity;
 
 architecture IF_Stage_arch of IF_Stage is
-	signal pc_reg, pc_next : OM_Addr_t;
+	signal pc_reg, pc_next : OM_Addr;
 	signal instrCache_delay : natural;
 begin
 	process(clk)
@@ -36,7 +40,7 @@ begin
 				instrCache_delay <= INSTR_CACHE_DELAY;
 				if (reset = '1')
 				then
-					pc_reg <= (others => '0'); -- upisati podatak u pocetnoj adresi programa
+					pc_reg <= in_instr_cache_data.initPC;
 				else
 					pc_reg <= (others => '0'); -- upisati adresu skoka
 				end if;
@@ -50,7 +54,15 @@ begin
 		end if;
 	end process;
 	
-	pc_next <= pc_reg + 2;
+	pc_next <= 	pc_reg + 2 when in_id_stage.free2 = '1' else
+				pc_reg;
 	
-	some_output <= pc_reg;
+	out_instr_cache_addr.addr1 <= pc_reg;
+	out_instr_cache_addr.addr2 <= pc_reg + 1;
+
+	out_id_stage.instr1 <=	in_instr_cache_data.data1;
+	out_id_stage.instr2 <=	in_instr_cache_data.data2;
+	out_id_stage.put2	<=	'1' when in_id_stage.free2 = '1' and else
+							'0';
+
 end architecture;
