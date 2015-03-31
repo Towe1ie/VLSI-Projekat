@@ -1,0 +1,878 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"del",
+				"delayCnt_reg"
+			],
+			[
+				"delay",
+				"delayCnt_next"
+			],
+			[
+				"std_to",
+				"std_To_tri_state"
+			],
+			[
+				"memA",
+				"memAck"
+			],
+			[
+				"arbit",
+				"dataCache_arbiter"
+			],
+			[
+				"robD",
+				"robDst_reg"
+			],
+			[
+				"LS_out",
+				"LS_Out"
+			],
+			[
+				"dataCache_ar",
+				"dataCache_Arbiter_ack"
+			],
+			[
+				"dcache_A",
+				"dataCache_Arbiter_req"
+			],
+			[
+				"dataCache_Ar",
+				"dataCache_Arbiter_ack"
+			],
+			[
+				"dela",
+				"delay"
+			],
+			[
+				"busyC",
+				"busyCnt_reg"
+			],
+			[
+				"busyCnt",
+				"busyCnt_reg"
+			],
+			[
+				"exe_LS",
+				"exe_LS_memArbiter_req"
+			],
+			[
+				"resolve",
+				"resolved_tri_state_logic"
+			],
+			[
+				"dataCahce",
+				"dataCache_bus"
+			],
+			[
+				"tri_statev",
+				"tri_state_vector_To_std"
+			],
+			[
+				"i_dataca",
+				"i_dataCache_in"
+			],
+			[
+				"WAIT",
+				"WAIT_WB_FREE"
+			],
+			[
+				"dcac",
+				"dcache_out"
+			],
+			[
+				"dcache",
+				"dcache_in"
+			],
+			[
+				"rob",
+				"robDst_reg"
+			],
+			[
+				"addrVa",
+				"addrValue"
+			],
+			[
+				"regVa",
+				"regValue_reg"
+			],
+			[
+				"regV",
+				"regValue_next"
+			],
+			[
+				"reg",
+				"regValue_next"
+			],
+			[
+				"WaIT",
+				"WAIT_CDB_ACK"
+			],
+			[
+				"delayC",
+				"delayCnt_reg"
+			],
+			[
+				"dcha",
+				"dcache_in"
+			],
+			[
+				"instrT",
+				"instrType_LOAD"
+			],
+			[
+				"instr",
+				"instrType_STORE"
+			],
+			[
+				"exe_LS_",
+				"exe_LS_out_data1"
+			],
+			[
+				"robDstF",
+				"robDstFirstExt"
+			],
+			[
+				"commit",
+				"commit_in_control"
+			],
+			[
+				"robAd",
+				"ROB_addrSize"
+			],
+			[
+				"stdo",
+				"std_logic_vector"
+			],
+			[
+				"commi",
+				"commit_in_control"
+			],
+			[
+				"union",
+				"union_rs_first"
+			],
+			[
+				"readySr",
+				"readySrc1"
+			],
+			[
+				"isntrT",
+				"instrType_STORE"
+			],
+			[
+				"storeBuff",
+				"storeBuff_reg"
+			],
+			[
+				"storeBu",
+				"storeBuff_reg"
+			],
+			[
+				"storeB",
+				"storeBuff_reg"
+			],
+			[
+				"issue_LS",
+				"issue_LS_in_data2"
+			],
+			[
+				"issue_LS_in",
+				"issue_LS_in_data1"
+			],
+			[
+				"store",
+				"storeBuff_reg"
+			],
+			[
+				"vecto",
+				"vectorToMnemonic"
+			],
+			[
+				"std_lo",
+				"std_logic"
+			],
+			[
+				"robA",
+				"ROB_addrSize"
+			],
+			[
+				"storebuff",
+				"storeBuffAddrSize"
+			],
+			[
+				"addrSi",
+				"addrSize"
+			],
+			[
+				"clock",
+				"clockCounter_reg"
+			],
+			[
+				"CMP",
+				"CMP_I"
+			],
+			[
+				"instRT",
+				"instrType_ERROR"
+			],
+			[
+				"jm",
+				"jmp_addr"
+			],
+			[
+				"STO",
+				"STOP_I"
+			],
+			[
+				"instRt",
+				"instrType_ERROR"
+			],
+			[
+				"exe_bran",
+				"exe_branch_out_control"
+			],
+			[
+				"use",
+				"useSecondOnly"
+			],
+			[
+				"exe",
+				"exe_alu2_in_control"
+			],
+			[
+				"exe_alu1",
+				"exe_alu1_in_control"
+			],
+			[
+				"exe_alu2_",
+				"exe_alu2_in_control"
+			],
+			[
+				"second",
+				"secondInstrType"
+			],
+			[
+				"instrType_",
+				"instrType_ONE_SRC"
+			],
+			[
+				"sec",
+				"secondAlu"
+			],
+			[
+				"flush",
+				"flush_out"
+			],
+			[
+				"robDst",
+				"robDst_reg"
+			],
+			[
+				"wb_out",
+				"wb_out_data"
+			],
+			[
+				"exe_branch_wb_",
+				"exe_branch_wb_data"
+			],
+			[
+				"wb_branc",
+				"wb_branch_out_control"
+			],
+			[
+				"i_fu_wb",
+				"i_fu_wb_in_control"
+			],
+			[
+				"wb_exe_",
+				"wb_exe_branch_control"
+			],
+			[
+				"exe_branch_wb",
+				"exe_branch_wb_control"
+			],
+			[
+				"sizeof_wb",
+				"sizeof_wb_branch_in_data"
+			],
+			[
+				"sizeof",
+				"sizeof_wb_branch_in_data"
+			],
+			[
+				"sizeof_",
+				"sizeof_wb_branch_in_data"
+			],
+			[
+				"branch_v",
+				"branchOut_v"
+			],
+			[
+				"delayCn",
+				"delayCnt_next"
+			],
+			[
+				"std_",
+				"std_logic_1164"
+			],
+			[
+				"union_rs",
+				"union_rs_second"
+			],
+			[
+				"unionTo",
+				"unionToBranch"
+			],
+			[
+				"exe_branch",
+				"exe_branch_out_data1"
+			],
+			[
+				"exe_branch_",
+				"exe_branch_out_control"
+			],
+			[
+				"issue_bran",
+				"issue_branch_in_control"
+			],
+			[
+				"i_rs",
+				"i_rs_issue_out_control"
+			],
+			[
+				"BRAN",
+				"Branch_rs"
+			],
+			[
+				"imm",
+				"getImm"
+			],
+			[
+				"unionto",
+				"unionToBranch"
+			],
+			[
+				"exe_bra",
+				"exe_branch_out_data"
+			],
+			[
+				"MOV",
+				"MOV_IMM_I"
+			],
+			[
+				"instrType_B",
+				"instrType_BRANCH_LINK"
+			],
+			[
+				"exe_Bra",
+				"exe_branch_out_data"
+			],
+			[
+				"mnemoni",
+				"mnemonicToVector"
+			],
+			[
+				"t_rob",
+				"t_ROB_addr"
+			],
+			[
+				"first",
+				"firstUsePsw"
+			],
+			[
+				"wor",
+				"wordSize"
+			],
+			[
+				"result",
+				"resultWithCarry"
+			],
+			[
+				"SA",
+				"SADC_I"
+			],
+			[
+				"resu",
+				"resultWithCarry"
+			],
+			[
+				"tri_state",
+				"tri_state_vector_To_std"
+			],
+			[
+				"cdbR",
+				"cdbRobAddr"
+			],
+			[
+				"resolved_tri",
+				"resolved_tri_state_logic_vector"
+			],
+			[
+				"unio",
+				"union_rs_first"
+			],
+			[
+				"commit_re",
+				"commit_regStats_control"
+			],
+			[
+				"commit_regS",
+				"commit_regStats_data"
+			],
+			[
+				"i_commit_regS",
+				"i_commit_regStats_data"
+			],
+			[
+				"i_commit_regStats",
+				"i_commit_regStats_control"
+			],
+			[
+				"i_commit_Reg",
+				"i_commit_regStats_addr"
+			],
+			[
+				"i_commit_regSt",
+				"i_commit_regStats_control"
+			],
+			[
+				"i_commit_reg",
+				"i_commit_regStats_addr"
+			],
+			[
+				"i_commit_",
+				"i_commit_gpr_addr"
+			],
+			[
+				"i_commit_g",
+				"i_commit_gpr_control"
+			],
+			[
+				"i_copm",
+				"i_commit_gpr_addr"
+			],
+			[
+				"t_",
+				"t_GPR_addr"
+			],
+			[
+				"read",
+				"readySrc2"
+			],
+			[
+				"readyS",
+				"readySrc1"
+			],
+			[
+				"regStats",
+				"regStats_control"
+			],
+			[
+				"src",
+				"src1First"
+			],
+			[
+				"commit_in",
+				"commit_in_data"
+			],
+			[
+				"regst",
+				"regStats_in_data"
+			],
+			[
+				"commit_out_",
+				"commit_out_data_addr"
+			],
+			[
+				"gprA",
+				"gprAddr_s2"
+			],
+			[
+				"gprAdd",
+				"gprAddr_s1"
+			],
+			[
+				"gpr",
+				"gprAddr_f2"
+			],
+			[
+				"src1",
+				"src1First"
+			],
+			[
+				"issue_reg",
+				"issue_regStats_control"
+			],
+			[
+				"i_regS",
+				"i_regStats_issue_control"
+			],
+			[
+				"i_issue_reg",
+				"i_issue_regStats_out_data"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"selected_items":
+		[
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"save",
+				"File: Save All"
+			]
+		],
+		"width": 400.0
+	},
+	"console":
+	{
+		"height": 617.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '2deb499853c4371624f5a07e27c334aa' + 'bf8c4e67d14fb0525ba4f89698a6d7e1'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/C/Users/Nemanja/Desktop/VLSI Projekat/VLSI-Projekat/VLSI_Sublime_Project.sublime-project",
+		"/D/Filmovi, Serije, Anime/anime.txt",
+		"//192.168.0.2/Share/New Text Document.txt",
+		"/D/Programiranje projekti/VHDL/VLSI_Projekat/code/packages/pkg_myDeclarations.vhd",
+		"/D/Programiranje projekti/VHDL/VLSI_Projekat/code/test benches/instrCache.vhd",
+		"/D/Programiranje projekti/VHDL/VLSI_Projekat/vlsi_projekat.sublime-project",
+		"/C/Users/Nemanja/Desktop/vlsi/code/test benches/instrCache.vhd",
+		"/D/Programiranje projekti/VHDL/VLSI_Projekat/VLIS_Projekat_description.txt",
+		"/D/FORMATIRANJE",
+		"/C/Users/Nemanja/Desktop/vlsi.txt",
+		"/C/Users/Nemanja/Desktop/Zvoncica - Copy/Zvoncica/ulaz.dat",
+		"/C/Users/Nemanja/Desktop/Zvoncica - Copy/Zvoncica/izlaz3.dat",
+		"/C/Users/Nemanja/Desktop/KernelFile.cpp",
+		"/D/Ostalo/views.txt",
+		"/D/Mega/Faks/7. semestar/VLSI/Svasta/Rokovi/vlsi jan 2013.txt",
+		"/C/Users/Nemanja/Desktop/Zvoncica/Zvoncica/izlaz3.dat",
+		"/D/CV/prica-za-intervju.txt",
+		"/C/Users/Nemanja/Desktop/Zvoncica/Zvoncica/izlaz2.dat",
+		"/C/Users/Nemanja/Desktop/Zvoncica/Zvoncica/izlaz1.dat",
+		"/C/Users/Nemanja/Desktop/Zvoncica/Zvoncica/ulaz.dat",
+		"/C/Users/Nemanja/Desktop/Napomena.txt",
+		"/C/Users/Nemanja/Desktop/ulaz.txt",
+		"/C/Users/Nemanja/AppData/Local/Temp/Temp1_javniTest.zip/javniTest/nit3.cpp",
+		"/C/Users/Nemanja/AppData/Local/Temp/Temp1_javniTest.zip/javniTest/nit2.cpp",
+		"/C/Users/Nemanja/AppData/Local/Temp/Temp1_javniTest.zip/javniTest/nit1.cpp",
+		"/C/Users/Nemanja/AppData/Local/Temp/Temp1_javniTest.zip/javniTest/main.cpp",
+		"/C/Users/Nemanja/AppData/Local/Temp/Temp1_javniTest.zip/javniTest/testprimer.h",
+		"/D/Programiranje projekti/VHDL/VLSI_Projekat/code/packages/pkg_myComponents.vhd",
+		"/D/Programiranje projekti/VHDL/VLSI_Projekat/code/entities/commit_stage.vhd",
+		"/D/Programiranje projekti/VHDL/VLSI_Projekat/code/entities/2xRegFile.vhd",
+		"/D/Programiranje projekti/VHDL/VLSI_Projekat/code/entities/if_stage.vhd",
+		"/D/Programiranje projekti/VHDL/VLSI_Projekat/code/entities/LS_fu.vhd",
+		"/D/Programiranje projekti/VHDL/VLSI_Projekat/code/ModelSimProjects/logFile.txt",
+		"/D/Programiranje projekti/VHDL/VLSI_Projekat/code/ModelSimProjects/program1.txt",
+		"/C/Users/Nemanja/Desktop/asm/test.txto",
+		"/D/Programiranje projekti/VHDL/VLSI_Projekat/code/entities/cpu.vhd",
+		"/D/Programiranje projekti/VHDL/VLSI_Projekat/code/entities/exe_stage.vhd",
+		"/D/Programiranje projekti/VHDL/VLSI_Projekat/code/entities/arbiter.vhd",
+		"/D/Programiranje projekti/VHDL/VLSI_Projekat/code/entities/LS_rs.vhd",
+		"/D/Dropbox/Faks/5. semestar/OS2/OS2 Projekat/Za upload/h/kernelFile.h",
+		"/D/Dropbox/Faks/5. semestar/OS2/OS2 Projekat/Za upload/src/kernelFile.cpp",
+		"/D/Programiranje projekti/VHDL/VLSI_Projekat/code/ModelSimProjects/loadStoreTest.txt",
+		"/D/Programiranje projekti/VHDL/VLSI_Projekat/code/entities/writeBack_stage.vhd",
+		"/D/Programiranje projekti/VHDL/VLSI_Projekat/code/test benches/dataCache.vhd",
+		"/D/Programiranje projekti/VHDL/VLSI_Projekat/code/entities/GPRegFile.vhd",
+		"/D/Programiranje projekti/VHDL/VLSI_Projekat/code/entities/branch_fu.vhd",
+		"/D/Programiranje projekti/VHDL/VLSI_Projekat/code/packages/pkg_decodeFunctions.vhd",
+		"/D/Programiranje projekti/VHDL/VLSI_Projekat/code/entities/alu_fu.vhd",
+		"/D/Programiranje projekti/VHDL/VLSI_Projekat/code/test benches/tb_cpu.vhd",
+		"/D/Programiranje projekti/VHDL/VLSI_Projekat/code/ModelSimProjects/if_issue/tb_cpu.vhd",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/ModelSimProjects/if_issue/dataMemory.txt",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/test benches/dataCache.vhd",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/test benches/tb_cpu.vhd",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/packages/pkg_decodeFunctions.vhd",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/test benches/instrCache.vhd",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/packages/pkg_myComponents.vhd",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/entities/issue_stage.vhd",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/entities/cpu.vhd",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/entities/LS_rs.vhd",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/ModelSimProjects/if_issue/loadStoreTest.txt",
+		"/C/Users/Nemanja/Desktop/vlsi asm/test.txto",
+		"/C/Users/Nemanja/Desktop/vlsi asm/test.txt",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/entities/branch_rs.vhd",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/entities/exe_stage.vhd",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/entities/writeBack_stage.vhd",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/ModelSimProjects/if_issue/storesTest.txt",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/entities/commit_stage.vhd",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/entities/FIFO_Controler.vhd",
+		"/E/Dropbox/Faks/5. semestar/OS2/OS2 Projekat/Za upload/src/kernelFS.cpp",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/test benches/saSkokovima.txt",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/ModelSimProjects/if_issue/logFile.txt",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/todo.txt",
+		"/C/Users/Nemanja/Desktop/reprtoar.txt",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/packages/pkg_myFunctions.vhd",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/packages/pkg_myDeclarations.vhd",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/packages/pkg_stringFunctions.vhd",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/entities/alu_rs.vhd",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/entities/alu_fu.vhd",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/entities/if_stage.vhd",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/entities/GPRegFile.vhd",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/entities/regStats.vhd",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/entities/branch_fu.vhd",
+		"/C/Users/Nemanja/Documents/Visual Studio 2013/Projects/Zezanje/Zezanje/Source.cpp",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/test benches/memoryContent4.txt",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/test benches/memoryContent3.txt",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/test benches/memoryContent2.txt",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/entities/FIFO_RegFile.vhd",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/entities/5xRegFile.vhd",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/test benches/memoryContent.txt",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/entities/4xRegFile.vhd",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/entities/2xRegFile.vhd",
+		"/C/Users/Nemanja/Desktop/vpn.txt",
+		"/C/Users/Nemanja/AppData/Roaming/Sublime Text 3/Packages/Default/Default (Windows).sublime-keymap",
+		"/C/Users/Nemanja/Desktop/New folder/test.txt",
+		"/C/Users/Nemanja/Desktop/New folder/go.bat",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/entities/arbiter.vhd",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/test benches/tb_arbiter.vhd",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/test benches/tb_alu_rs.vhd",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/packages/pkg_conversions.vhd",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/vlsi_projekat.sublime-project",
+		"/C/Users/Nemanja/Desktop/VLSI front end/id_stage.vhd",
+		"/C/Users/Nemanja/Desktop/VLSI front end/if_stage.vhd",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/test benches/tb_if_issue.vhd",
+		"/E/Programiranje projekti/VHDL/UART send/uart_recive.vhd",
+		"/E/Programiranje projekti/VHDL/UART send/uart_pkg.vhd",
+		"/C/Users/Nemanja/Desktop/VLSI front end/processor_pkg.vhd",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/test benches/memoryContent.bin",
+		"/E/Dropbox/Faks/7. semestar/VLSI/Audio/Vremena.txt",
+		"/E/Programiranje projekti/VHDL/ROB/declarations_pkg.vhd",
+		"/E/Programiranje projekti/VHDL/ROB/ROB.vhd",
+		"/E/Programiranje projekti/VHDL/ROB/Functions_pkg.vhd",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/entities/ROB_RegFile.vhd",
+		"/E/Programiranje projekti/VHDL/ROB/Fifo_Controler.vhd",
+		"/E/Programiranje projekti/VHDL/ROB/tb_ROB.vhd",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/entities/pkg_myDeclarations.vhd",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/entities/id_stage.vhd",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/entities/pkg_myDeclarations.vhd.bak",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/code/entities/if_stage.vhd.bak",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/if_stage.vhd",
+		"/E/Programiranje projekti/VHDL/VLSI_Projekat/pkg_myDeclarations.vhd",
+		"/C/Users/Nemanja/Desktop/asddsa.txt",
+		"/C/Users/Nemanja/Desktop/VLSI front end/frontend.vhd",
+		"/C/Users/Nemanja/Desktop/VLSI front end/instruction_mem.vhd",
+		"/C/Users/Nemanja/Desktop/VLSI front end/processor_tsb.vhd"
+	],
+	"find":
+	{
+		"height": 21.0
+	},
+	"find_in_files":
+	{
+		"height": 90.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"0555",
+			"LS_Out",
+			"arbiter",
+			"outAddr",
+			"resolved",
+			"t_cdb",
+			"i_icache",
+			"union",
+			"STORE",
+			"wraddr1",
+			"wraddr2",
+			"head",
+			"instrA",
+			"t_storeBuffer",
+			"cdbRegValue",
+			"isregInstr",
+			"stopCPU",
+			"instr1",
+			"if_in_data",
+			"instr1ForROB",
+			"instr1",
+			"secondInstrType",
+			"robDstFirst",
+			"i_fu_rs_",
+			"t_cdb",
+			"z",
+			"unionToBranch",
+			"exe_branch_out_data2",
+			"exe_branch_out_data1",
+			"instr1ForRob",
+			"t_oc",
+			"t_roben",
+			"i_wb_alu_in_data",
+			"t_cdb",
+			"regStats_control.wr",
+			"regStats_out_data",
+			"commit_in_data",
+			"processing_next",
+			"processing",
+			"pprocessing",
+			"fu_out",
+			"busy",
+			"rs_next",
+			"instrava",
+			"alu_rs",
+			"fileName",
+			"TEXT",
+			"file",
+			"rs_next",
+			"t_Cdb",
+			"^(.*)$",
+			"ready",
+			"tri_state_logic_vector",
+			"resolve_tri_state_logic",
+			"fc",
+			"ready",
+			"arbiter",
+			"tri_state_logic_array",
+			"t_oc",
+			"fu_out",
+			"vectorToAluRsEntry",
+			"t_instruction",
+			"t_mnemonic",
+			"free2",
+			"free1",
+			"wr2",
+			"wr1",
+			"cn",
+			"rob",
+			"if_in_data"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": true,
+		"replace_history":
+		[
+			"LS_dataOut",
+			"resolved",
+			"tri_state_logic_vector",
+			"issue_out_control.free2",
+			"issue_out_control.free1",
+			"issue_in_control.wr2",
+			"issue_in_control.wr1"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 21.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"project": "VLSI_Project_description.sublime-project",
+	"replace":
+	{
+		"height": 38.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 224.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

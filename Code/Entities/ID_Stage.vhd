@@ -5,6 +5,7 @@ use ieee.std_logic_1164.all;
 use work.Declarations.all;
 use work.Components.all;
 use work.Functions.all;
+use work.DecodeFunctions.all;
 
 entity ID_Stage is
 	port
@@ -12,18 +13,27 @@ entity ID_Stage is
 		out_if_stage : out ID_IF_out;
 		in_if_stage : in IF_ID_out;
 
-		first, second : out Word;
+		out_GPR_addr : out ID_GPR_addr;
+		in_GPR_data : in GPR_ID_data;
+
+		in_CSR : in Word;
+
+		first_instr, second_instr : out Decoded_Instruction;
 
 		clk, reset, flush : std_ulogic
 	);
 end entity;
 
 architecture ID_Stage_arch of ID_Stage is
+-- **** FIFO logic ****
 	type FIFO_Reg_file is array (0 to 2**IF_ID_BUFFER_ADDR_SIZE - 1) of Word;
 	signal buff, buff_next : FIFO_Reg_file;
 
 	signal tail, head, tailInc, headInc : std_ulogic_vector(IF_ID_BUFFER_ADDR_SIZE - 1 downto 0);
 	signal put2, wr2, take1, take2, free2 : std_ulogic;
+
+-- **** ****
+	signal first, second : Word;
 	signal reset_or_flush : std_ulogic;
 begin
 	reset_or_flush <= reset or flush;
@@ -34,6 +44,22 @@ begin
 
 	first <= buff(to_integer(head));
 	second <= buff(to_integer(headInc));
+
+	out_GPR_addr.addr1 <= get_reg_addr(first, 1);
+	out_GPR_addr.addr2 <= get_reg_addr(first, 2);
+	out_GPR_addr.addr3 <= get_reg_addr(second, 1);
+	out_GPR_addr.addr4 <= get_reg_addr(second, 2);
+
+	decode(first, first_instr.info);
+	decode(second, second_instr.info);
+
+	first_instr.src1_Value <= in_GPR_data.dataOut1;
+	first_instr.src2_Value <= in_GPR_data.dataOut2;
+	first_instr.CSR <= in_CSR;
+	second_instr.src1_Value <= in_GPR_data.dataOut3;
+	second_instr.src2_Value <= in_GPR_data.dataOut4;
+	second_instr.CSR <= in_CSR;
+
 
 	fifoControler : FIFO_Controler
 		generic map (IF_ID_BUFFER_ADDR_SIZE)

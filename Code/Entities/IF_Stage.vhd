@@ -62,7 +62,7 @@ begin
 
 	out_id_stage.instr1 <=	in_instr_cache_data.data1;
 	out_id_stage.instr2 <=	in_instr_cache_data.data2;
-	out_id_stage.put2	<=	'1' when in_id_stage.free2 = '1' and else
+	out_id_stage.put2	<=	'1' when in_id_stage.free2 = '1' else
 							'0';
 
 end architecture;

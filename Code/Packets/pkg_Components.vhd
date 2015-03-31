@@ -14,6 +14,7 @@ package Components is
 			clk, reset : in std_ulogic
 		);
 	end component;
+
 	component IF_Stage is
 		generic
 		(
@@ -37,9 +38,33 @@ package Components is
 			out_if_stage : out ID_IF_out;
 			in_if_stage : in IF_ID_out;
 
-			first, second : out Word;
+			out_GPR_addr : out ID_GPR_addr;
+			in_GPR_data : in GPR_ID_data;
+
+			in_CSR : in Word;
+
+			first_instr, second_instr : out Decoded_Instruction;
 
 			clk, reset, flush : std_ulogic
+		);
+	end component;
+
+	component GPRFile is
+		generic
+		(
+			addrSize : natural := 5;
+			wordSize : natural := 32
+		);
+		port
+		(
+			wrAddr : in GPR_addr;
+			dataIn : in Word;
+			wr : in std_ulogic;
+			
+			in_id_address : in ID_GPR_addr;
+			out_id_data : out GPR_ID_data;
+			
+			clk, reset : in std_ulogic
 		);
 	end component;
 
