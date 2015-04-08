@@ -18,6 +18,9 @@ entity ID_Stage is
 
 		in_CSR : in Word;
 
+		in_EXE_data_hazard_control : in EXE_Data_Hazard_Control;
+		in_WB_data_hazard_control : in WB_Data_Hazard_Control;
+
 		first_instr, second_instr : out Decoded_Instruction;
 
 		clk, reset, flush : std_ulogic
@@ -34,13 +37,13 @@ architecture ID_Stage_arch of ID_Stage is
 
 -- **** ****
 	signal first, second : Word;
+	signal firstDecoded, secondDecoded : Decoded_Instruction;
+	signal firstReady, secondReady : std_ulogic;
 	signal reset_or_flush : std_ulogic;
 begin
 	reset_or_flush <= reset or flush;
 	tailInc <= tail + 1;
 	headInc <= head + 1;
-	take1 <= '0';
-	take2 <= '0';
 
 	first <= buff(to_integer(head));
 	second <= buff(to_integer(headInc));
@@ -50,16 +53,88 @@ begin
 	out_GPR_addr.addr3 <= get_reg_addr(second, 1);
 	out_GPR_addr.addr4 <= get_reg_addr(second, 2);
 
-	decode(first, first_instr.info);
-	decode(second, second_instr.info);
+	decode(first, firstDecoded.info);
+	decode(second, secondDecoded.info);
 
-	first_instr.src1_Value <= in_GPR_data.dataOut1;
-	first_instr.src2_Value <= in_GPR_data.dataOut2;
-	first_instr.CSR <= in_CSR;
-	second_instr.src1_Value <= in_GPR_data.dataOut3;
-	second_instr.src2_Value <= in_GPR_data.dataOut4;
-	second_instr.CSR <= in_CSR;
+	firstDecoded.CSR <= in_CSR;
+	--firstReady <= '1';
+	firstDecoded.ready <= firstReady;
+	first_instr <= firstDecoded;
 
+	
+	secondDecoded.CSR <= in_CSR;
+	--secondReady <= '1';
+	secondDecoded.ready <= secondReady;
+	second_instr <= secondDecoded;
+
+-- **** Data hazards logic ****
+	process(in_GPR_data, firstDecoded, secondDecoded, in_EXE_Data_Hazard_Control, in_WB_Data_Hazard_Control)
+		variable hazard_src1, hazard_src2, forwarded_src1, forwarded_src2 : boolean;
+		variable forwardValue : Word;
+		variable second_to_first_dependance : boolean;
+	begin
+	-- First instruction
+		firstReady <= '1';
+		firstDecoded.src1_Value <= in_GPR_data.dataOut1;
+		firstDecoded.src2_Value <= in_GPR_data.dataOut2;
+
+		if (not isImmed(firstDecoded.info.op))
+		then
+			resolve_Data_Hazard(firstDecoded.info.src1_addr, in_EXE_Data_Hazard_Control, in_WB_Data_Hazard_Control, hazard_src1, forwardValue, forwarded_src1);
+			if (forwarded_src1)
+			then
+				firstDecoded.src1_Value <= forwardValue;
+			end if;
+
+			resolve_Data_Hazard(firstDecoded.info.src2_addr, in_EXE_Data_Hazard_Control, in_WB_Data_Hazard_Control, hazard_src2, forwardValue, forwarded_src2);
+			if (forwarded_src2)
+			then
+				firstDecoded.src2_Value <= forwardValue;
+			end if;
+
+			if ((hazard_src1 and not forwarded_src1) or (hazard_src2 and not forwarded_src2 and not useOneOperand(firstDecoded.info.op)))
+			then
+				firstReady <= '0';
+			end if;
+		end if;
+
+	-- Second instruction
+		secondReady <= '1';
+		secondDecoded.src1_Value <= in_GPR_data.dataOut3;
+		secondDecoded.src2_Value <= in_GPR_data.dataOut4;
+		second_to_first_dependance := false;
+
+		if (not isImmed(secondDecoded.info.op))
+		then
+			resolve_Data_Hazard(secondDecoded.info.src1_addr, in_EXE_Data_Hazard_Control, in_WB_Data_Hazard_Control, hazard_src1, forwardValue, forwarded_src1);
+			if (forwarded_src1)
+			then
+				secondDecoded.src1_Value <= forwardValue;
+			end if;
+
+			resolve_Data_Hazard(secondDecoded.info.src2_addr, in_EXE_Data_Hazard_Control, in_WB_Data_Hazard_Control, hazard_src2, forwardValue, forwarded_src2);
+			if (forwarded_src2)
+			then
+				secondDecoded.src2_Value <= forwardValue;
+			end if;
+
+			if (secondDecoded.info.src1_addr = firstDecoded.info.dst_addr or (secondDecoded.info.src2_addr = firstDecoded.info.dst_addr and not useOneOperand(firstDecoded.info.op)))
+			then
+				second_to_first_dependance := true;
+			end if;
+
+			if ((hazard_src1 and not forwarded_src1) or (hazard_src2 and not forwarded_src2 and not useOneOperand(firstDecoded.info.op)) or second_to_first_dependance)
+			then
+				secondReady <= '0';
+			end if;
+		end if;
+	end process;
+
+-- **** Other ****
+	take1 <= 	'1' when firstReady = '1' and secondReady = '0' else
+				'0';
+	take2 <=	'1' when firstReady = '1' and secondReady = '1' else
+				'0';
 
 	fifoControler : FIFO_Controler
 		generic map (IF_ID_BUFFER_ADDR_SIZE)

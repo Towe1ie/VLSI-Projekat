@@ -43,9 +43,36 @@ package Components is
 
 			in_CSR : in Word;
 
+			in_EXE_data_hazard_control : in EXE_Data_Hazard_Control;
+			in_WB_data_hazard_control : in WB_Data_Hazard_Control;
+
 			first_instr, second_instr : out Decoded_Instruction;
 
 			clk, reset, flush : std_ulogic
+		);
+	end component;
+
+	component ALU is
+		port
+		(
+			in_instr : in Decoded_Instruction;
+
+			out_data_hazard_info : out Data_hazard_info;
+			out_WB : out ALU_WB_out;
+
+			clk, flush, reset : std_ulogic
+		);
+	end component;
+
+	component WB_Stage is
+		port
+		(
+			in_alu1, in_alu2 : in ALU_WB_out;
+
+			out_data_hazard_control : out WB_Data_Hazard_Control;
+			out_GPR : out WB_GPR_out;
+
+			clk, flush, reset : in std_ulogic
 		);
 	end component;
 
@@ -57,10 +84,8 @@ package Components is
 		);
 		port
 		(
-			wrAddr : in GPR_addr;
-			dataIn : in Word;
-			wr : in std_ulogic;
-			
+			in_wb : in WB_GPR_out;
+
 			in_id_address : in ID_GPR_addr;
 			out_id_data : out GPR_ID_data;
 			

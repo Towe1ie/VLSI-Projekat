@@ -14,10 +14,8 @@ entity GPRFile is
 	);
 	port
 	(
-		wrAddr : in GPR_addr;
-		dataIn : in Word;
-		wr : in std_ulogic;
-		
+		in_wb : in WB_GPR_out;
+
 		in_id_address : in ID_GPR_addr;
 		out_id_data : out GPR_ID_data;
 		
@@ -54,19 +52,30 @@ begin
 		end if;
 	end process;
 	
-	process(wr, dataIn, wrAddr, regs)
-		variable i1, i2 : integer;
-	begin
-		i1 := to_integer(wrAddr);
-		
+	process(in_wb, regs)
+		variable i : integer;
+	begin		
 		for i in regs_next'range
 		loop
 			regs_next(i) <= regs(i);
 		end loop;
 		
-		if (wr = '1')
+		if (in_wb.wrLoadStore = '1')
 		then
-			regs_next(i1) <= dataIn;
+			i := to_integer(in_wb.loadStore_addr);
+			regs_next(i) <= in_wb.loadStore_value;
+		end if;
+
+		if (in_wb.wrAlu1 = '1')
+		then
+			i := to_integer(in_wb.alu1_addr);
+			regs_next(i) <= in_wb.alu1_value;
+		end if;
+
+		if (in_wb.wrAlu2 = '1')
+		then
+			i := to_integer(in_wb.alu2_addr);
+			regs_next(i) <= in_wb.alu2_value;
 		end if;
 	end process;
 end architecture;

@@ -10,6 +10,18 @@ package DecodeFunctions is
 	function ext_imm(w : Word) return Word;
 	function check_need_CSR(m : Mnemonic) return std_ulogic;
 	function get_reg_addr(w : Word; flag : natural) return GPR_addr; -- flag: 0-dst, 1-src1, 2-src2,
+
+	function get_instr_type(m : Mnemonic) return Instr_type;
+	function isImmed(m : Mnemonic) return boolean;
+	function useOneOperand(m : Mnemonic) return boolean;
+
+	procedure resolve_Data_Hazard(src : GPR_addr; 
+								exe_info : EXE_Data_Hazard_Control; 
+								wb_info : WB_Data_Hazard_Control;
+								hazard : out boolean;
+								forw_value : out Word;
+								forwarded : out boolean);
+
 end package;
 
 package body DecodeFunctions is
@@ -102,4 +114,124 @@ package body DecodeFunctions is
 
 		return ret;
 	end function;
+
+	function get_instr_type(m : Mnemonic) return Instr_type is
+	begin
+		if (m = AND_I or m = SUB_I or m = ADD_I or m = ADC_I or
+			m = SBC_I or m = CMP_I or m = SSUB_I or m = SADD_I or
+			m = SADC_I or m = SSBC_I or m = MOV_I or m = NOT_I or m = SL_I or
+			m = SR_I or m = ASR_I or m = MOV_IMM_I or m = SMOV_IMM_I)
+		then
+			return ALU_Type;
+		elsif (m = LOAD_I or m = STORE_I)
+		then
+			return LOAD_STORE_Type;
+		elsif (m = BEQ_I or m = BGT_I or m = BHI_I or m = BAL_I or m = BLAL_I)
+		then
+			return BRANCH_Type;
+		elsif (m = STORE_I)
+		then
+			return STOP_Type;
+		else
+			return ERROR_Type;
+		end if;
+	end function;
+
+	function isImmed(m : Mnemonic) return boolean is
+	begin
+		if (m = MOV_IMM_I or m = SMOV_IMM_I)
+		then
+			return true;
+		else
+			return false;
+		end if;
+	end function;
+
+	function useOneOperand(m : Mnemonic) return boolean is
+	begin
+		if (m = MOV_I or m = NOT_I or m = LOAD_I)
+		then
+			return true;
+		else
+			return false;
+		end if;
+	end function;
+
+	procedure resolve_Data_Hazard(src : GPR_addr; 
+								exe_info : EXE_Data_Hazard_Control; 
+								wb_info : WB_Data_Hazard_Control;
+								hazard : out boolean;
+								forw_value : out Word;
+								forwarded : out boolean) is
+	begin
+		forw_value := (others => '0');
+		forwarded := false;
+		hazard := false;
+		
+		if (src = wb_info.loadStore_info.dst and wb_info.loadStore_info.valid = '1')
+		then
+			hazard := true;
+			forwarded := false;
+			if (wb_info.loadStore_info.canForward = '1')
+			then
+				forwarded := true;
+				forw_value := wb_info.loadStore_info.value;
+			end if;
+		end if;
+
+		if (src = wb_info.alu1_info.dst and wb_info.alu1_info.valid = '1')
+		then
+			hazard := true;
+			forwarded := false;
+			if (wb_info.alu1_info.canForward = '1')
+			then
+				forwarded := true;
+				forw_value := wb_info.alu1_info.value;
+			end if;
+		end if;
+
+		if (src = wb_info.alu2_info.dst and wb_info.alu2_info.valid = '1')
+		then
+			hazard := true;
+			forwarded := false;
+			if (wb_info.alu2_info.canForward = '1')
+			then
+				forwarded := true;
+				forw_value := wb_info.alu2_info.value;
+			end if;
+		end if;		
+
+		if (src = exe_info.alu1_info.dst and exe_info.alu1_info.valid = '1')
+		then
+			hazard := true;
+			forwarded := false;
+			if (exe_info.alu1_info.canForward = '1')
+			then
+				forwarded := true;
+				forw_value := exe_info.alu1_info.value;
+			end if;
+		end if;
+
+		if (src = exe_info.load_store_info.dst and exe_info.load_store_info.valid = '1')
+		then
+			hazard := true;
+			forwarded := false;
+			if (exe_info.load_store_info.canForward = '1')
+			then
+				forwarded := true;
+				forw_value := exe_info.load_store_info.value;
+			end if;
+		end if;
+
+		if (src = exe_info.alu2_info.dst and exe_info.alu2_info.valid = '1')
+		then
+			hazard := true;
+			forwarded := false;
+			if (exe_info.alu2_info.canForward = '1')
+			then
+				forwarded := true;
+				forw_value := exe_info.alu2_info.value;
+			end if;
+		end if;
+	end procedure;
 end package body;
