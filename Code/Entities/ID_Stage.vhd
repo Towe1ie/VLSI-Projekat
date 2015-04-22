@@ -56,20 +56,20 @@ begin
 	decode(first, firstDecoded.info);
 	decode(second, secondDecoded.info);
 
-	firstDecoded.CSR <= in_CSR;
+	--firstDecoded.CSR <= in_CSR;
 	--firstReady <= '1';
 	firstDecoded.ready <= firstReady;
 	first_instr <= firstDecoded;
 
 	
-	secondDecoded.CSR <= in_CSR;
+	--secondDecoded.CSR <= in_CSR;
 	--secondReady <= '1';
 	secondDecoded.ready <= secondReady;
 	second_instr <= secondDecoded;
 
 -- **** Data hazards logic ****
-	process(in_GPR_data, firstDecoded, secondDecoded, in_EXE_Data_Hazard_Control, in_WB_Data_Hazard_Control)
-		variable hazard_src1, hazard_src2, forwarded_src1, forwarded_src2 : boolean;
+	process(in_GPR_data, firstDecoded, secondDecoded, in_EXE_Data_Hazard_Control, in_WB_Data_Hazard_Control, in_CSR)
+		variable hazard_src1, hazard_src2, hazard_CSR, forwarded_src1, forwarded_src2, forwarded_CSR : boolean;
 		variable forwardValue : Word;
 		variable second_to_first_dependance : boolean;
 	begin
@@ -77,6 +77,11 @@ begin
 		firstReady <= '1';
 		firstDecoded.src1_Value <= in_GPR_data.dataOut1;
 		firstDecoded.src2_Value <= in_GPR_data.dataOut2;
+		firstDecoded.CSR <= in_CSR;
+		hazard_src1 := false;
+		hazard_src2 := false;
+		hazard_CSR := false;
+		forwarded_CSR := false;
 
 		if (not isImmed(firstDecoded.info.op))
 		then
@@ -98,11 +103,30 @@ begin
 			end if;
 		end if;
 
+		if (firstDecoded.info.need_CSR = '1')
+		then
+			resolve_Data_Hazard_CSR(in_EXE_Data_Hazard_Control, in_WB_Data_Hazard_Control, hazard_CSR, forwardValue, forwarded_CSR);
+			if (forwarded_CSR)
+			then
+				firstDecoded.CSR <= forwardValue;
+			end if;
+		end if;
+
+		if (hazard_CSR and not forwarded_CSR)
+		then
+			firstReady <= '0';
+		end if;
+
 	-- Second instruction
 		secondReady <= '1';
 		secondDecoded.src1_Value <= in_GPR_data.dataOut3;
 		secondDecoded.src2_Value <= in_GPR_data.dataOut4;
+		secondDecoded.CSR <= in_CSR;
 		second_to_first_dependance := false;
+		hazard_src1 := false;
+		hazard_src2 := false;
+		hazard_CSR := false;
+		forwarded_CSR := false;
 
 		if (not isImmed(secondDecoded.info.op))
 		then
@@ -123,10 +147,29 @@ begin
 				second_to_first_dependance := true;
 			end if;
 
-			if ((hazard_src1 and not forwarded_src1) or (hazard_src2 and not forwarded_src2 and not useOneOperand(firstDecoded.info.op)) or second_to_first_dependance)
+			if ((hazard_src1 and not forwarded_src1) or (hazard_src2 and not forwarded_src2 and not useOneOperand(firstDecoded.info.op)))
 			then
 				secondReady <= '0';
 			end if;
+		end if;
+
+		if (secondDecoded.info.need_CSR = '1')
+		then
+			resolve_Data_Hazard_CSR(in_EXE_Data_Hazard_Control, in_WB_Data_Hazard_Control, hazard_CSR, forwardValue, forwarded_CSR);
+			if (forwarded_CSR)
+			then
+				secondDecoded.CSR <= forwardValue;
+			end if;
+
+			if (firstDecoded.info.updateCSR = '1')
+			then
+				second_to_first_dependance := true;
+			end if;
+		end if;
+
+		if ((hazard_CSR and not forwarded_CSR) or second_to_first_dependance)
+		then
+			secondReady <= '0';
 		end if;
 	end process;
 

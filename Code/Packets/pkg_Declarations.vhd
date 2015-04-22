@@ -20,13 +20,18 @@ package Declarations is
 
 	constant IF_ID_BUFFER_ADDR_SIZE : natural := 3;
 
-	
+	constant N_POS : natural := 31;
+	constant Z_POS : natural := 30;
+	constant C_POS : natural := 29;
+	constant V_POS : natural := 28;
 	
 -- **** Other ****
 	type Data_hazard_info is record
 		dst : GPR_addr;
 		valid : std_ulogic;
 		value : Word;
+		CSR : Word;
+		updateCSR : std_ulogic;
 		canForward : std_ulogic;
 	end record;
 
@@ -66,6 +71,7 @@ package Declarations is
 		imm : Word;
 		op : Mnemonic;
 		need_CSR : std_ulogic;
+		updateCSR : std_ulogic;
 	end record;
 
 	type Decoded_Instruction is record
@@ -81,14 +87,15 @@ package Declarations is
 	end record;
 
 -- **** WB ****
-	type WB_Entry is record
-		op : Mnemonic;
-		dst : GPR_addr;
-		value : Word;
-		cnd : std_ulogic;
-		jmp_addr : OM_Addr;
-		valid : std_ulogic;
-	end record;
+--	type WB_Entry is record
+--		op : Mnemonic;
+--		dst : GPR_addr;
+--		value : Word;
+--		CSR : Word;
+--		cnd : std_ulogic;
+--		jmp_addr : OM_Addr;
+--		valid : std_ulogic;
+--	end record;
 
 
 -- **** WB/ID ****
@@ -100,6 +107,8 @@ package Declarations is
 		op : Mnemonic;
 		dst : GPR_addr;
 		value : Word;
+		CSR : Word;
+		updateCSR : std_ulogic;
 		valid : std_ulogic;
 	end record;
 
@@ -112,5 +121,10 @@ package Declarations is
 		wrAlu1, wrAlu2, wrLoadStore : std_ulogic;
 		alu1_addr, alu2_addr, loadStore_addr : GPR_addr;
 		alu1_value, alu2_value, loadStore_value : Word;
+	end record;
+
+	type WB_CSR_out is record
+		wrCSR : std_ulogic;
+		CSR : Word;
 	end record;
 end package;

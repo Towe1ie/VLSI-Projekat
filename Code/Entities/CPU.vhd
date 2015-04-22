@@ -23,7 +23,7 @@ architecture CPU_arch of CPU is
 	signal GPR_ID_data_signal : GPR_ID_data;
 
 	signal CSR_reg, CSR_next, CSR_in : Word;
-	signal wr_CSR : std_ulogic;
+	signal WB_CSR_signal : WB_CSR_out;
 
 	signal alu1_instr, alu2_instr : Decoded_Instruction;
 	signal res1, res2 : Word;
@@ -37,7 +37,6 @@ architecture CPU_arch of CPU is
 begin
 -- **** Concurent ****
 	flush <= '0';
-	CSR_in <= (others => '0');
 
 -- **** CSR Process ****
 	process(clk, reset)
@@ -53,8 +52,7 @@ begin
 		end if;
 	end process;
 	
-	wr_CSR <= '0';
-	CSR_next <= CSR_in when wr_CSR = '1' else
+	CSR_next <= WB_CSR_signal.CSR when WB_CSR_signal.wrCSR = '1' else
 				CSR_reg;
 
 -- **** GPR ****
@@ -124,6 +122,7 @@ begin
 			in_alu1 => alu1_WB_signal,
 			in_alu2 => alu2_WB_signal,
 			out_data_hazard_control => WB_data_hazard_control_signal,
+			out_CSR => WB_CSR_signal,
 			out_GPR => WB_GPR_signal,
 			clk => clk,
 			flush => flush,

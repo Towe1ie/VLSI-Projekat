@@ -22,6 +22,12 @@ package DecodeFunctions is
 								forw_value : out Word;
 								forwarded : out boolean);
 
+	procedure resolve_Data_Hazard_CSR(exe_info : EXE_Data_Hazard_Control; 
+									wb_info : WB_Data_Hazard_Control;
+									hazard : out boolean;
+									forw_value : out Word;
+									forwarded : out boolean);
+
 end package;
 
 package body DecodeFunctions is
@@ -35,6 +41,12 @@ package body DecodeFunctions is
 		instr.dst_addr <= get_reg_addr(w, 0);
 		instr.imm <= ext_imm(w);
 		instr.need_CSR <= check_need_CSR(op);
+		instr.updateCSR <= '0';
+		if (get_instr_type(op) = ALU_Type)
+		then
+			instr.updateCSR <= '1';
+		end if;
+
 	end procedure;
 
 	function ext_imm(w : Word) return Word is
@@ -157,7 +169,8 @@ package body DecodeFunctions is
 		end if;
 	end function;
 
-	procedure resolve_Data_Hazard(src : GPR_addr; 
+-- **** Data hazard procedures ****
+	procedure resolve_Data_Hazard(src : GPR_addr;
 								exe_info : EXE_Data_Hazard_Control; 
 								wb_info : WB_Data_Hazard_Control;
 								hazard : out boolean;
@@ -199,8 +212,9 @@ package body DecodeFunctions is
 				forwarded := true;
 				forw_value := wb_info.alu2_info.value;
 			end if;
-		end if;		
+		end if;
 
+		-- srediti redosled kada se bude radila LoadStore jedinica
 		if (src = exe_info.alu1_info.dst and exe_info.alu1_info.valid = '1')
 		then
 			hazard := true;
@@ -231,6 +245,84 @@ package body DecodeFunctions is
 			then
 				forwarded := true;
 				forw_value := exe_info.alu2_info.value;
+			end if;
+		end if;
+	end procedure;
+
+	procedure resolve_Data_Hazard_CSR(exe_info : EXE_Data_Hazard_Control; 
+									wb_info : WB_Data_Hazard_Control;
+									hazard : out boolean;
+									forw_value : out Word;
+									forwarded : out boolean) is
+	begin
+		forw_value := (others => '0');
+		forwarded := false;
+		hazard := false;
+		
+		if (wb_info.loadStore_info.updateCSR = '1' and wb_info.loadStore_info.valid = '1')
+		then
+			hazard := true;
+			forwarded := false;
+			if (wb_info.loadStore_info.canForward = '1')
+			then
+				forwarded := true;
+				forw_value := wb_info.loadStore_info.CSR;
+			end if;
+		end if;
+
+		if (wb_info.alu1_info.updateCSR = '1' and wb_info.alu1_info.valid = '1')
+		then
+			hazard := true;
+			forwarded := false;
+			if (wb_info.alu1_info.canForward = '1')
+			then
+				forwarded := true;
+				forw_value := wb_info.alu1_info.CSR;
+			end if;
+		end if;
+
+		if (wb_info.alu2_info.updateCSR = '1' and wb_info.alu2_info.valid = '1')
+		then
+			hazard := true;
+			forwarded := false;
+			if (wb_info.alu2_info.canForward = '1')
+			then
+				forwarded := true;
+				forw_value := wb_info.alu2_info.CSR;
+			end if;
+		end if;
+
+		-- srediti redosled kada se bude radila LoadStore jedinica
+		if (exe_info.alu1_info.updateCSR = '1' and exe_info.alu1_info.valid = '1')
+		then
+			hazard := true;
+			forwarded := false;
+			if (exe_info.alu1_info.canForward = '1')
+			then
+				forwarded := true;
+				forw_value := exe_info.alu1_info.CSR;
+			end if;
+		end if;
+
+		if (exe_info.load_store_info.updateCSR = '1' and exe_info.load_store_info.valid = '1')
+		then
+			hazard := true;
+			forwarded := false;
+			if (exe_info.load_store_info.canForward = '1')
+			then
+				forwarded := true;
+				forw_value := exe_info.load_store_info.CSR;
+			end if;
+		end if;
+
+		if (exe_info.alu2_info.updateCSR = '1' and exe_info.alu2_info.valid = '1')
+		then
+			hazard := true;
+			forwarded := false;
+			if (exe_info.alu2_info.canForward = '1')
+			then
+				forwarded := true;
+				forw_value := exe_info.alu2_info.CSR;
 			end if;
 		end if;
 	end procedure;

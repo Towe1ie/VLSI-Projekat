@@ -12,6 +12,8 @@ entity WB_Stage is
 		out_data_hazard_control : out WB_Data_Hazard_Control;
 		out_GPR : out WB_GPR_out;
 
+		out_CSR : out WB_CSR_out;
+
 		clk, flush, reset : in std_ulogic
 	);
 end entity;
@@ -38,16 +40,22 @@ begin
 	out_data_hazard_control.alu1_info.dst <= alu1_reg.dst;
 	out_data_hazard_control.alu1_info.canForward <= '1';
 	out_data_hazard_control.alu1_info.value <= alu1_reg.value;
+	out_data_hazard_control.alu1_info.CSR <= alu1_reg.CSR;
+	out_data_hazard_control.alu1_info.updateCSR <= alu1_reg.updateCSR;
 
 	out_data_hazard_control.alu2_info.valid <= alu2_reg.valid;
 	out_data_hazard_control.alu2_info.dst <= alu2_reg.dst;
 	out_data_hazard_control.alu2_info.canForward <= '1';
 	out_data_hazard_control.alu2_info.value <= alu2_reg.value;
+	out_data_hazard_control.alu2_info.CSR <= alu2_reg.CSR;
+	out_data_hazard_control.alu2_info.updateCSR <= alu2_reg.updateCSR;
 
 	out_data_hazard_control.loadStore_info.valid <= '0';
 	out_data_hazard_control.loadStore_info.dst <= (others => '0');
 	out_data_hazard_control.loadStore_info.canForward <= '0';
 	out_data_hazard_control.loadStore_info.value <= (others => '0');
+	out_data_hazard_control.loadStore_info.CSR <= (others => '0');
+	out_data_hazard_control.loadStore_info.updateCSR <= '0';
 
 	alu1_next <= 	in_alu1.instr_info;-- when in_alu1.put = '1' else
 					--alu1_reg;
@@ -67,4 +75,21 @@ begin
 	out_GPR.wrLoadStore <= '0'; -- Privremeno
 	out_GPR.loadStore_addr <= (others => '0');
 	out_GPR.loadStore_value <= (others => '1');
+
+	process(alu1_reg, alu2_reg)
+	begin
+		out_CSR.wrCSR <= '0';
+		out_CSR.CSR <= (others => 'X');
+		if (alu1_reg.updateCSR = '1')
+		then
+			out_CSR.wrCSR <= '1';
+			out_CSR.CSR <= alu1_reg.CSR;
+		end if;
+
+		if (alu2_reg.updateCSR = '1')
+		then
+			out_CSR.wrCSR <= '1';
+			out_CSR.CSR <= alu2_reg.CSR;
+		end if;
+	end process;
 end architecture;

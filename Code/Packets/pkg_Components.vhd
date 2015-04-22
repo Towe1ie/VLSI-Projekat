@@ -72,6 +72,8 @@ package Components is
 			out_data_hazard_control : out WB_Data_Hazard_Control;
 			out_GPR : out WB_GPR_out;
 
+			out_CSR : out WB_CSR_out;
+			
 			clk, flush, reset : in std_ulogic
 		);
 	end component;
