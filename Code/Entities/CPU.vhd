@@ -25,18 +25,18 @@ architecture CPU_arch of CPU is
 	signal CSR_reg, CSR_next, CSR_in : Word;
 	signal WB_CSR_signal : WB_CSR_out;
 
-	signal alu1_instr, alu2_instr : Decoded_Instruction;
+	signal first_instr, second_instr : Decoded_Instruction;
 	signal res1, res2 : Word;
 	signal WB_data_hazard_control_signal : WB_Data_Hazard_Control;
 	signal EXE_data_hazard_control_signal : EXE_Data_Hazard_Control;
 
-	signal alu1_WB_signal, alu2_WB_signal : ALU_WB_out;
+	signal alu1_WB_signal, alu2_WB_signal, br_WB_signal : WB_Reg_Instr;
 	signal WB_GPR_signal : WB_GPR_out;
 
+	signal jumpAddr : OM_Addr;
 	signal flush : std_ulogic;
 begin
 -- **** Concurent ****
-	flush <= '0';
 
 -- **** CSR Process ****
 	process(clk, reset)
@@ -74,7 +74,8 @@ begin
 			out_instr_cache_addr => out_instr_cache_addr,
 			in_id_stage => ID_IF_out_signal,
 			out_id_stage => IF_ID_out_signal,
-			jump => '0',
+			jumpAddr => jumpAddr,
+			jump => flush,
 			reset => reset,
 			clk => clk
 		);
@@ -89,8 +90,8 @@ begin
 			in_CSR => CSR_reg,
 			in_WB_data_hazard_control => WB_data_hazard_control_signal,
 			in_EXE_data_hazard_control => EXE_data_hazard_control_signal,			
-			first_instr => alu1_instr,
-			second_instr => alu2_instr,
+			first_instr => first_instr,
+			second_instr => second_instr,
 			clk => clk,
 			reset => reset,
 			flush => flush);
@@ -98,7 +99,7 @@ begin
 -- **** EXE Stage ****
 	ALU_1 : ALU
 		port map(
-			in_instr => alu1_instr,
+			in_instr => first_instr,
 			out_data_hazard_info => EXE_data_hazard_control_signal.alu1_info,
 			out_wb => alu1_WB_signal,
 			clk => clk,
@@ -108,24 +109,34 @@ begin
 
 	ALU_2 : ALU
 		port map(
-			in_instr => alu2_instr,
+			in_instr => second_instr,
 			out_data_hazard_info => EXE_data_hazard_control_signal.alu2_info,
 			out_wb => alu2_WB_signal,
 			clk => clk,
 			flush => flush,
 			reset => reset
 			);
+	BR : Branch
+		port map(
+			in_instr_first => first_instr,
+			in_instr_second => second_instr,
+			out_WB => br_WB_signal,
+			clk => clk,
+			flush => flush,
+			reset => reset);
 
 -- **** WB Stage ****
 	WBStage : WB_Stage
 		port map(
 			in_alu1 => alu1_WB_signal,
 			in_alu2 => alu2_WB_signal,
+			in_br => br_WB_signal,
 			out_data_hazard_control => WB_data_hazard_control_signal,
 			out_CSR => WB_CSR_signal,
+			out_flush => flush,
+			out_jumpAddr => jumpAddr,
 			out_GPR => WB_GPR_signal,
 			clk => clk,
-			flush => flush,
 			reset => reset
 			);
 end architecture;

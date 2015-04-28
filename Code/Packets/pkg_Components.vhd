@@ -28,6 +28,7 @@ package Components is
 			in_id_stage : in ID_IF_out;
 			out_id_stage : out IF_ID_out;
 
+			jumpAddr : in OM_Addr;
 			jump, reset, clk : in std_ulogic
 		);
 	end component;
@@ -58,7 +59,18 @@ package Components is
 			in_instr : in Decoded_Instruction;
 
 			out_data_hazard_info : out Data_hazard_info;
-			out_WB : out ALU_WB_out;
+			out_WB : out WB_Reg_Instr;
+
+			clk, flush, reset : std_ulogic
+		);
+	end component;
+
+	component Branch is
+		port
+		(
+			in_instr_first, in_instr_second : in Decoded_Instruction;
+
+			out_WB : out WB_Reg_Instr;
 
 			clk, flush, reset : std_ulogic
 		);
@@ -67,14 +79,17 @@ package Components is
 	component WB_Stage is
 		port
 		(
-			in_alu1, in_alu2 : in ALU_WB_out;
+			in_alu1, in_alu2, in_br : in WB_Reg_Instr;
 
 			out_data_hazard_control : out WB_Data_Hazard_Control;
 			out_GPR : out WB_GPR_out;
 
 			out_CSR : out WB_CSR_out;
+
+			out_flush : out std_ulogic;
+			out_jumpAddr : out OM_Addr;
 			
-			clk, flush, reset : in std_ulogic
+			clk, reset : in std_ulogic
 		);
 	end component;
 

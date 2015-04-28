@@ -3,35 +3,42 @@ library work;
 
 use ieee.std_logic_1164.all;
 use work.Declarations.all;
+use work.Functions.all;
 
 entity WB_Stage is
 	port
 	(
-		in_alu1, in_alu2 : in ALU_WB_out;
+		in_alu1, in_alu2, in_br : in WB_Reg_Instr;
 
 		out_data_hazard_control : out WB_Data_Hazard_Control;
 		out_GPR : out WB_GPR_out;
 
 		out_CSR : out WB_CSR_out;
 
-		clk, flush, reset : in std_ulogic
+		out_flush : out std_ulogic;
+		out_jumpAddr : out OM_Addr;
+
+		clk, reset : in std_ulogic
 	);
 end entity;
 
 architecture WB_Stage_arch of WB_Stage is 
-	signal alu1_reg, alu1_next, alu2_reg, alu2_next : WB_Reg_Instr;
+	signal alu1_reg, alu1_next, alu2_reg, alu2_next, br_reg, br_next : WB_Reg_Instr;
+	signal jump : std_ulogic;
 begin
 	process(clk)
 	begin
 		if (rising_edge(clk))
 		then
-			if (reset = '1' or flush = '1')
+			if (reset = '1' or jump = '1')
 			then
 				alu1_reg.valid <= '0';
 				alu2_reg.valid <= '0';
+				br_reg.valid <= '0';
 			else
 				alu1_reg <= alu1_next;
 				alu2_reg <= alu2_next;
+				br_reg <= br_next;
 			end if;
 		end if;
 	end process;
@@ -57,17 +64,16 @@ begin
 	out_data_hazard_control.loadStore_info.CSR <= (others => '0');
 	out_data_hazard_control.loadStore_info.updateCSR <= '0';
 
-	alu1_next <= 	in_alu1.instr_info;-- when in_alu1.put = '1' else
-					--alu1_reg;
-	alu2_next <= 	in_alu2.instr_info;-- when in_alu2.put = '1' else
-					--alu2_reg;
+	alu1_next <= in_alu1;
+	alu2_next <= in_alu2;
+	br_next <= in_br;
 
-	out_GPR.wrAlu1 <= 	'1' when alu1_reg.valid = '1' else
-						'0';
+	out_GPR.wrAlu1 <= '1' when alu1_reg.valid = '1' else
+							'0';
 	out_GPR.alu1_addr <= alu1_reg.dst;
 	out_GPR.alu1_value <= alu1_reg.value;
 
-	out_GPR.wrAlu2 <= 	'1' when alu2_reg.valid = '1' else
+	out_GPR.wrAlu2 <= 	'1' when alu2_reg.valid = '1'  and jump = '0' else
 						'0';
 	out_GPR.alu2_addr <= alu2_reg.dst;
 	out_GPR.alu2_value <= alu2_reg.value;
@@ -75,6 +81,15 @@ begin
 	out_GPR.wrLoadStore <= '0'; -- Privremeno
 	out_GPR.loadStore_addr <= (others => '0');
 	out_GPR.loadStore_value <= (others => '1');
+
+	out_GPR.wrBr <= '1' when br_reg.valid = '1' and br_reg.op = BLAL_I else
+					'0';
+	out_GPR.br_addr <= br_reg.dst;
+	out_GPR.br_value <= to_std_ulogic_vector(to_integer_unsigned(br_reg.pc) + 1, WORD_SIZE);
+
+	jump <= br_reg.valid and br_reg.cnd;
+	out_flush <= jump;
+	out_jumpAddr <= br_reg.jmp_addr;
 
 	process(alu1_reg, alu2_reg)
 	begin

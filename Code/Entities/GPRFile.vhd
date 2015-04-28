@@ -27,10 +27,10 @@ architecture GPRFile_arch of GPRFile is
 	type registerArray is array (0 to 2**addrSize - 1) of Word;
 	signal regs, regs_next : registerArray;
 begin
-	out_id_data.dataOut1 <= regs(to_integer(in_id_address.addr1));
-	out_id_data.dataOut2 <= regs(to_integer(in_id_address.addr2));
-	out_id_data.dataOut3 <= regs(to_integer(in_id_address.addr3));
-	out_id_data.dataOut4 <= regs(to_integer(in_id_address.addr4));
+	out_id_data.dataOut1 <= regs(to_integer_unsigned(in_id_address.addr1));
+	out_id_data.dataOut2 <= regs(to_integer_unsigned(in_id_address.addr2));
+	out_id_data.dataOut3 <= regs(to_integer_unsigned(in_id_address.addr3));
+	out_id_data.dataOut4 <= regs(to_integer_unsigned(in_id_address.addr4));
 
 	process (clk, reset)
 		variable i1, i2, iCDB : integer;
@@ -62,20 +62,26 @@ begin
 		
 		if (in_wb.wrLoadStore = '1')
 		then
-			i := to_integer(in_wb.loadStore_addr);
+			i := to_integer_unsigned(in_wb.loadStore_addr);
 			regs_next(i) <= in_wb.loadStore_value;
 		end if;
 
 		if (in_wb.wrAlu1 = '1')
 		then
-			i := to_integer(in_wb.alu1_addr);
+			i := to_integer_unsigned(in_wb.alu1_addr);
 			regs_next(i) <= in_wb.alu1_value;
 		end if;
 
 		if (in_wb.wrAlu2 = '1')
 		then
-			i := to_integer(in_wb.alu2_addr);
+			i := to_integer_unsigned(in_wb.alu2_addr);
 			regs_next(i) <= in_wb.alu2_value;
+		end if;
+
+		if (in_wb.wrBr = '1')
+		then
+			i := to_integer_unsigned(in_wb.br_addr);
+			regs_next(i) <= in_wb.br_value;
 		end if;
 	end process;
 end architecture;

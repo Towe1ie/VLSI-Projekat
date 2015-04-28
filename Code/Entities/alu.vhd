@@ -12,7 +12,7 @@ entity ALU is
 		in_instr : in Decoded_Instruction;
 
 		out_data_hazard_info : out Data_hazard_info;
-		out_WB : out ALU_WB_out;
+		out_WB : out WB_Reg_Instr;
 
 		clk, flush, reset : std_ulogic
 	);
@@ -25,8 +25,10 @@ architecture ALU_arch of ALU is
 	signal CSR_reg, CSR_next : Word;
 	signal dst_reg, dst_next : GPR_addr;
 	signal ready_reg, ready_next : std_ulogic;
+	signal pc_reg, pc_next : OM_Addr;
 
 	signal a_c, b_c, imm_c, result_c : std_ulogic_vector(WORD_SIZE downto 0); -- Signali prosireni za jedan bit tako da ukljuce i carry
+	signal asr_res : std_ulogic_vector(WORD_SIZE downto 0);
 	signal C : std_ulogic;
 	signal newC, newN, newZ, newV : std_ulogic;
 	signal newCSR : Word;
@@ -36,9 +38,12 @@ architecture ALU_arch of ALU is
 
 	signal result : Word;
 begin
-	process(clk)
+	process(clk, flush, reset)
 	begin
-		if (rising_edge(clk))
+		if (flush = '1' or reset = '1')
+		then
+			ready_reg <= '0';
+		elsif (rising_edge(clk))
 		then
 			op_reg <= op_next;
 			a_reg <= a_next;
@@ -47,6 +52,7 @@ begin
 			dst_reg <= dst_next;
 			imm_reg <= imm_next;
 			ready_reg <= ready_next;
+			pc_reg <= pc_next;
 		end if;
 	end process;
 
@@ -57,6 +63,7 @@ begin
 	imm_next	<= in_instr.info.imm;
 	dst_next	<= in_instr.info.dst_addr;
 	ready_next 	<= in_instr.ready;
+	pc_next		<= in_instr.info.pc;
 
 	a_c(WORD_SIZE) <= '0';
 	a_c(WORD_SIZE - 1 downto 0) <= a_reg;
@@ -81,15 +88,19 @@ begin
 				not b_c 		when op_reg = NOT_I else
 				lsl(b_c, a_c)	when op_reg = SL_I else
 				lsr(b_c, a_c) 	when op_reg = SR_I else
-				asr(b_c, a_c) 	when op_reg = ASR_I else
+				asr_res		 	when op_reg = ASR_I else
 				imm_c			when op_reg = MOV_IMM_I else
 				imm_c 			when op_reg = SMOV_IMM_I else
 				(others => 'X');
+
+	asr_res(WORD_SIZE - 1 downto 0) <= asr(b_reg, a_reg);
+	asr_res(WORD_SIZE) <= '0';
 	
 -- **** Nove vrednosti CSR bitova ****
 	newN <= result_c(WORD_SIZE - 1);
 	newC <= result_c(WORD_SIZE);
-	newV <= '1' when (a_c(WORD_SIZE - 1) = b_c(WORD_SIZE - 1)) and (result_c(WORD_SIZE - 1) /= a_c(WORD_SIZE - 1)) else
+	newV <= '1' when ((op_reg = SADD_I or op_reg = SADC_I) and (a_c(WORD_SIZE - 1) = b_c(WORD_SIZE - 1)) and (result_c(WORD_SIZE - 1) /= a_c(WORD_SIZE - 1))) or
+					 ((op_reg = SSUB_I or op_reg = SSBC_I) and (a_c(WORD_SIZE - 1) /= b_c(WORD_SIZE - 1)) and (result_c(WORD_SIZE - 1) /= a_c(WORD_SIZE - 1))) else
 			'0';
 	newZ <= '1' when result = 0 else
 			'0';
@@ -122,11 +133,14 @@ begin
 	out_data_hazard_info.updateCSR <= '1';
 	out_data_hazard_info.canForward <= '1';
 
-	out_WB.instr_info.value <= result;
-	out_WB.instr_info.op 	<= op_reg;
-	out_WB.instr_info.dst 	<= dst_reg;
-	out_WB.instr_info.valid <= working;
-	out_WB.instr_info.CSR 	<= newCSR;
-	out_WB.instr_info.updateCSR <= '1';
+	out_WB.value <= result;
+	out_WB.op 	<= op_reg;
+	out_WB.dst 	<= dst_reg;
+	out_WB.valid <= working;
+	out_WB.CSR 	<= newCSR;
+	out_WB.updateCSR <= '1';
+	out_WB.cnd <= 'U';
+	out_WB.jmp_addr <= (others => 'U');
+	out_WB.pc <= pc_reg;
 
 end architecture;

@@ -23,7 +23,9 @@ entity IF_Stage is
 		in_id_stage : in ID_IF_out;
 		out_id_stage : out IF_ID_out;
 
+		jumpAddr : in OM_Addr;
 		jump, reset, clk : in std_ulogic
+
 	);
 end entity;
 
@@ -42,7 +44,7 @@ begin
 				then
 					pc_reg <= in_instr_cache_data.initPC;
 				else
-					pc_reg <= (others => '0'); -- upisati adresu skoka
+					pc_reg <= jumpAddr;
 				end if;
 			else
 				pc_reg <= pc_next;
@@ -60,8 +62,10 @@ begin
 	out_instr_cache_addr.addr1 <= pc_reg;
 	out_instr_cache_addr.addr2 <= pc_reg + 1;
 
-	out_id_stage.instr1 <=	in_instr_cache_data.data1;
-	out_id_stage.instr2 <=	in_instr_cache_data.data2;
+	out_id_stage.instr1.raw_instr <= in_instr_cache_data.data1;
+	out_id_stage.instr1.pc <= pc_reg;
+	out_id_stage.instr2.raw_instr <= in_instr_cache_data.data2;
+	out_id_stage.instr2.pc <= pc_reg + 1;
 	out_id_stage.put2	<=	'1' when in_id_stage.free2 = '1' else
 							'0';
 

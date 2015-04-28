@@ -18,7 +18,9 @@ package Functions is
 	function lsl (v, cnt : std_ulogic_vector) return std_ulogic_vector;
 
 -- **** Konverzija ****
-	function to_integer(v : std_ulogic_vector) return integer;
+	function to_integer_unsigned(v : std_ulogic_vector) return integer;
+	function to_integer_signed(v : std_ulogic_vector) return integer;
+	function to_std_ulogic_vector(x : integer; length : natural) return std_ulogic_vector;
 end package;
 
 package body Functions is
@@ -49,7 +51,7 @@ package body Functions is
 	begin
 		tmp(0) := right;
 		tmp(tmp'high downto 1) := (others => '0');
-		return left + to_integer(tmp);
+		return left + to_integer_unsigned(tmp);
 	end function;
 
 	function "-" (left, right : std_ulogic_vector) return std_ulogic_vector is
@@ -78,7 +80,7 @@ package body Functions is
 	begin
 		tmp(0) := right;
 		tmp(tmp'high downto 1) := (others => '0');
-		return left - to_integer(tmp);
+		return left - to_integer_unsigned(tmp);
 	end function;
 
 	function "=" (left : std_ulogic_vector; right : integer) return boolean is
@@ -88,21 +90,21 @@ package body Functions is
 
 	function asr (v, cnt : std_ulogic_vector) return std_ulogic_vector is
 	begin
-		return std_ulogic_vector(shift_right(signed(v), to_integer(cnt)));
+		return std_ulogic_vector(shift_right(signed(v), to_integer_unsigned(cnt)));
 	end function;
 
 	function lsr (v, cnt : std_ulogic_vector) return std_ulogic_vector is
 	begin
-		return std_ulogic_vector(shift_right(unsigned(v), to_integer(cnt)));
+		return std_ulogic_vector(shift_right(unsigned(v), to_integer_unsigned(cnt)));
 	end function;
 
 	function lsl (v, cnt : std_ulogic_vector) return std_ulogic_vector is
 	begin
-		return std_ulogic_vector(shift_left(unsigned(v), to_integer(cnt)));
+		return std_ulogic_vector(shift_left(unsigned(v), to_integer_unsigned(cnt)));
 	end function;
 
 -- **** Konverzija ****
-	function to_integer(v : std_ulogic_vector) return integer is
+	function to_integer_unsigned(v : std_ulogic_vector) return integer is
 	begin
 		if (is_X(v))
 		then
@@ -112,4 +114,18 @@ package body Functions is
 		end if;
 	end function;
 
+	function to_integer_signed(v : std_ulogic_vector) return integer is
+	begin
+		if (is_X(v))
+		then
+			return 0;
+		else
+			return to_integer(signed(v));
+		end if;
+	end function;
+
+	function to_std_ulogic_vector(x : integer; length : natural) return std_ulogic_vector is
+	begin
+		return std_ulogic_vector(to_unsigned(x, length));
+	end function;
 end package body;

@@ -24,6 +24,8 @@ package Declarations is
 	constant Z_POS : natural := 30;
 	constant C_POS : natural := 29;
 	constant V_POS : natural := 28;
+
+	constant LINK_REG_DST : natural := 31;
 	
 -- **** Other ****
 	type Data_hazard_info is record
@@ -46,10 +48,14 @@ package Declarations is
 	end record;
 
 -- **** IF/ID ****
-	
+	type Undecoded_Instruction is record
+		pc : OM_Addr;
+		raw_instr : Word;
+	end record;
+
 	type IF_ID_out is record
 		put2 : std_ulogic;
-		instr1, instr2 : Word;
+		instr1, instr2 : Undecoded_Instruction;
 	end record;
 
 	type ID_IF_out is record
@@ -69,6 +75,8 @@ package Declarations is
 	type Instruction_info is record
 		src1_addr, src2_addr, dst_addr : GPR_addr;	
 		imm : Word;
+		pc : OM_Addr;
+		jmp_offset : Word;
 		op : Mnemonic;
 		need_CSR : std_ulogic;
 		updateCSR : std_ulogic;
@@ -86,16 +94,7 @@ package Declarations is
 		alu1_info, alu2_info, load_store_info : Data_hazard_info;
 	end record;
 
--- **** WB ****
---	type WB_Entry is record
---		op : Mnemonic;
---		dst : GPR_addr;
---		value : Word;
---		CSR : Word;
---		cnd : std_ulogic;
---		jmp_addr : OM_Addr;
---		valid : std_ulogic;
---	end record;
+
 
 
 -- **** WB/ID ****
@@ -109,18 +108,21 @@ package Declarations is
 		value : Word;
 		CSR : Word;
 		updateCSR : std_ulogic;
+		cnd : std_ulogic;
+		jmp_addr : OM_Addr;
+		pc : OM_Addr;
 		valid : std_ulogic;
 	end record;
 
-	type ALU_WB_out is record
-		instr_info : WB_Reg_Instr;
+	--type EXE_WB_out is record
+	--	instr_info : WB_Reg_Instr;
 		--put : std_ulogic;
-	end record;
+	--end record;
 
 	type WB_GPR_out is record
-		wrAlu1, wrAlu2, wrLoadStore : std_ulogic;
-		alu1_addr, alu2_addr, loadStore_addr : GPR_addr;
-		alu1_value, alu2_value, loadStore_value : Word;
+		wrAlu1, wrAlu2, wrLoadStore, wrBr : std_ulogic;
+		alu1_addr, alu2_addr, loadStore_addr, br_addr : GPR_addr;
+		alu1_value, alu2_value, loadStore_value, br_value : Word;
 	end record;
 
 	type WB_CSR_out is record

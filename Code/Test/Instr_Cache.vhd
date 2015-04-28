@@ -29,8 +29,8 @@ architecture Instruction_Cache_arch of Instruction_Cache is
 	signal memory : Regs;
 	signal initPC : OM_Addr;
 begin
-	out_data.data1 <= memory(to_integer(in_addr.addr1));
-	out_data.data2 <= memory(to_integer(in_addr.addr2));
+	out_data.data1 <= memory(to_integer_unsigned(in_addr.addr1));
+	out_data.data2 <= memory(to_integer_unsigned(in_addr.addr2));
 	out_data.initPC <= initPC;
 	
 	process (in_load)
@@ -54,7 +54,7 @@ begin
 				  pcInitialized := true;
 				end if;
 				read(l, word, good);
-				addrInt := to_integer(addr);
+				addrInt := to_integer_unsigned(addr);
 				memory(addrInt) <= word;
 			end loop;
 		end if;

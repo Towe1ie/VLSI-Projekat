@@ -29,14 +29,14 @@ end entity;
 
 architecture ID_Stage_arch of ID_Stage is
 -- **** FIFO logic ****
-	type FIFO_Reg_file is array (0 to 2**IF_ID_BUFFER_ADDR_SIZE - 1) of Word;
+	type FIFO_Reg_file is array (0 to 2**IF_ID_BUFFER_ADDR_SIZE - 1) of Undecoded_Instruction;
 	signal buff, buff_next : FIFO_Reg_file;
 
 	signal tail, head, tailInc, headInc : std_ulogic_vector(IF_ID_BUFFER_ADDR_SIZE - 1 downto 0);
 	signal put2, wr2, take1, take2, free2 : std_ulogic;
 
 -- **** ****
-	signal first, second : Word;
+	signal first, second : Undecoded_Instruction;
 	signal firstDecoded, secondDecoded : Decoded_Instruction;
 	signal firstReady, secondReady : std_ulogic;
 	signal reset_or_flush : std_ulogic;
@@ -45,13 +45,13 @@ begin
 	tailInc <= tail + 1;
 	headInc <= head + 1;
 
-	first <= buff(to_integer(head));
-	second <= buff(to_integer(headInc));
+	first <= buff(to_integer_unsigned(head));
+	second <= buff(to_integer_unsigned(headInc));
 
-	out_GPR_addr.addr1 <= get_reg_addr(first, 1);
-	out_GPR_addr.addr2 <= get_reg_addr(first, 2);
-	out_GPR_addr.addr3 <= get_reg_addr(second, 1);
-	out_GPR_addr.addr4 <= get_reg_addr(second, 2);
+	out_GPR_addr.addr1 <= get_reg_addr(first.raw_instr, 1);
+	out_GPR_addr.addr2 <= get_reg_addr(first.raw_instr, 2);
+	out_GPR_addr.addr3 <= get_reg_addr(second.raw_instr, 1);
+	out_GPR_addr.addr4 <= get_reg_addr(second.raw_instr, 2);
 
 	decode(first, firstDecoded.info);
 	decode(second, secondDecoded.info);
@@ -71,10 +71,12 @@ begin
 	process(in_GPR_data, firstDecoded, secondDecoded, in_EXE_Data_Hazard_Control, in_WB_Data_Hazard_Control, in_CSR)
 		variable hazard_src1, hazard_src2, hazard_CSR, forwarded_src1, forwarded_src2, forwarded_CSR : boolean;
 		variable forwardValue : Word;
-		variable second_to_first_dependance : boolean;
+		variable firstRdy_tmp : std_ulogic;
+		variable second_to_first_dependance, bothBranch : boolean;
 	begin
 	-- First instruction
 		firstReady <= '1';
+		firstRdy_tmp := '1';
 		firstDecoded.src1_Value <= in_GPR_data.dataOut1;
 		firstDecoded.src2_Value <= in_GPR_data.dataOut2;
 		firstDecoded.CSR <= in_CSR;
@@ -83,7 +85,7 @@ begin
 		hazard_CSR := false;
 		forwarded_CSR := false;
 
-		if (not isImmed(firstDecoded.info.op))
+		if (not isImmed(firstDecoded.info.op) and not (get_instr_type(firstDecoded.info.op) = BRANCH_Type))
 		then
 			resolve_Data_Hazard(firstDecoded.info.src1_addr, in_EXE_Data_Hazard_Control, in_WB_Data_Hazard_Control, hazard_src1, forwardValue, forwarded_src1);
 			if (forwarded_src1)
@@ -99,7 +101,7 @@ begin
 
 			if ((hazard_src1 and not forwarded_src1) or (hazard_src2 and not forwarded_src2 and not useOneOperand(firstDecoded.info.op)))
 			then
-				firstReady <= '0';
+				firstRdy_tmp := '0';
 			end if;
 		end if;
 
@@ -112,10 +114,17 @@ begin
 			end if;
 		end if;
 
-		if (hazard_CSR and not forwarded_CSR)
+		if ((hazard_CSR and not forwarded_CSR) or firstDecoded.info.op = ERROR_I)
 		then
-			firstReady <= '0';
+			firstRdy_tmp := '0';
 		end if;
+
+		if (firstDecoded.info.op = STOP_I)
+		then
+			firstRdy_tmp := '1';
+		end if;
+
+		firstReady <= firstRdy_tmp;
 
 	-- Second instruction
 		secondReady <= '1';
@@ -128,7 +137,7 @@ begin
 		hazard_CSR := false;
 		forwarded_CSR := false;
 
-		if (not isImmed(secondDecoded.info.op))
+		if (not isImmed(secondDecoded.info.op) and not (get_instr_type(secondDecoded.info.op) = BRANCH_Type))
 		then
 			resolve_Data_Hazard(secondDecoded.info.src1_addr, in_EXE_Data_Hazard_Control, in_WB_Data_Hazard_Control, hazard_src1, forwardValue, forwarded_src1);
 			if (forwarded_src1)
@@ -167,9 +176,16 @@ begin
 			end if;
 		end if;
 
-		if ((hazard_CSR and not forwarded_CSR) or second_to_first_dependance)
+		bothBranch := get_instr_type(secondDecoded.info.op) = BRANCH_Type and get_instr_type(firstDecoded.info.op) = BRANCH_Type;
+
+		if ((hazard_CSR and not forwarded_CSR) or second_to_first_dependance or secondDecoded.info.op = ERROR_I or bothBranch or firstRdy_tmp = '0')
 		then
 			secondReady <= '0';
+		end if;
+
+		if (secondDecoded.info.op = STOP_I)
+		then
+			secondReady <= '1';
 		end if;
 	end process;
 
@@ -206,7 +222,8 @@ begin
 			then
 				for i in buff'range
 				loop
-					buff(i) <= (others => 'U');
+					buff(i).raw_instr <= (others => 'U');
+					buff(i).pc <= (others => 'U');
 				end loop;
 			else
 				for i in buff'range
@@ -226,8 +243,8 @@ begin
 
 		if (wr2 = '1')
 		then
-			buff_next(to_integer(tail)) <= in_if_stage.instr1;
-			buff_next(to_integer(tailInc)) <= in_if_stage.instr2;
+			buff_next(to_integer_unsigned(tail)) <= in_if_stage.instr1;
+			buff_next(to_integer_unsigned(tailInc)) <= in_if_stage.instr2;
 		end if;
 	end process;
 	put2 <= in_if_stage.put2;

@@ -5,9 +5,10 @@ use work.Declarations.all;
 use ieee.std_logic_1164.all;
 
 package DecodeFunctions is
-	procedure decode(w : Word; signal instr : out Instruction_info);
+	procedure decode(w : Undecoded_Instruction; signal instr : out Instruction_info);
 	function decode_oc(w : Word) return Mnemonic;
 	function ext_imm(w : Word) return Word;
+	function ext_jmpOffset(w : Word) return Word;
 	function check_need_CSR(m : Mnemonic) return std_ulogic;
 	function get_reg_addr(w : Word; flag : natural) return GPR_addr; -- flag: 0-dst, 1-src1, 2-src2,
 
@@ -31,15 +32,17 @@ package DecodeFunctions is
 end package;
 
 package body DecodeFunctions is
-	procedure decode(w : Word; signal instr : out Instruction_info) is
+	procedure decode(w : Undecoded_Instruction; signal instr : out Instruction_info) is
 		variable op : Mnemonic;
 	begin
-		op := decode_oc(w);
+		op := decode_oc(w.raw_instr);
 		instr.op <= op;
-		instr.src1_addr <= get_reg_addr(w, 1);
-		instr.src2_addr <= get_reg_addr(w, 2);
-		instr.dst_addr <= get_reg_addr(w, 0);
-		instr.imm <= ext_imm(w);
+		instr.src1_addr <= get_reg_addr(w.raw_instr, 1);
+		instr.src2_addr <= get_reg_addr(w.raw_instr, 2);
+		instr.dst_addr <= get_reg_addr(w.raw_instr, 0);
+		instr.imm <= ext_imm(w.raw_instr);
+		instr.jmp_offset <= ext_jmpOffset(w.raw_instr);
+		instr.pc <= w.pc;
 		instr.need_CSR <= check_need_CSR(op);
 		instr.updateCSR <= '0';
 		if (get_instr_type(op) = ALU_Type)
@@ -54,6 +57,16 @@ package body DecodeFunctions is
 	begin
 		ret(31 downto 17) := (others => w(16));
 		ret(16 downto 0) := w(16 downto 0);
+
+		return ret;
+	end function;
+
+	function ext_jmpOffset(w : Word) return Word is
+		variable ret : Word;
+	begin
+		ret(31 downto 27) := (others => w(26));
+		ret(26 downto 0) := w(26 downto 0);
+
 		return ret;
 	end function;
 
