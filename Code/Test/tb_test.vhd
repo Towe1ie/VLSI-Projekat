@@ -11,6 +11,9 @@ architecture cpu_test_vhd_tst_arch of cpu_test_vhd_tst is
 	signal instrCache_data : Instr_cache_data;
 	signal instrCache_addr : Instr_Cahce_addr;
 
+	signal dataCache_in : Data_Cache_in;
+	signal dataCache_out : Data_Cache_out;
+
 	signal clk, reset, jump : std_ulogic;
 begin
 	instructionCache : Instruction_Cache
@@ -18,11 +21,25 @@ begin
 		port map(out_data => instrCache_data,
 				in_addr => instrCache_addr,
 				in_load => reset);
+
+	dataCache : Data_Cache
+		generic map("dataMemory.txt", DATA_CACHE_DELAY)
+		port map
+		(
+			dcache_in => dataCache_in,
+			dcache_out => dataCache_out,
+			clk => clk,
+			load => reset
+		);
+
 	uut : CPU
 		port map(
 			clk => clk, reset => reset,
 			in_instr_cache_data => instrCache_data,
-			out_instr_cache_addr => instrCache_addr);
+			out_instr_cache_addr => instrCache_addr,
+			in_data_cache => dataCache_out,
+			out_data_cache => dataCache_in
+			);
 	
 	process
 	begin

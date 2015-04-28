@@ -11,6 +11,9 @@ package Components is
 			in_instr_cache_data : in Instr_Cache_data;
 			out_instr_cache_addr : out Instr_Cahce_addr;
 
+			in_data_cache : in Data_Cache_out;
+			out_data_cache : out Data_Cache_in;
+
 			clk, reset : in std_ulogic
 		);
 	end component;
@@ -121,6 +124,22 @@ package Components is
 			in_addr : in Instr_Cahce_addr;
 
 			in_load : in std_logic
+		);
+	end component;
+
+	component Data_Cache is
+		generic
+		(
+			loadFileName : string := "memory.bin";
+			delay : natural := 0
+		);
+		port
+		(
+			dcache_in : in Data_Cache_in;
+			dcache_out : out Data_Cache_out;
+
+			clk : in std_logic;
+			load : in std_logic
 		);
 	end component;
 

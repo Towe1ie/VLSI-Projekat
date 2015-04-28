@@ -26,6 +26,8 @@ package Declarations is
 	constant V_POS : natural := 28;
 
 	constant LINK_REG_DST : natural := 31;
+
+	constant DATA_CACHE_DELAY : natural := 3;
 	
 -- **** Other ****
 	type Data_hazard_info is record
@@ -45,6 +47,16 @@ package Declarations is
 
 	type Instr_Cahce_addr is record
 		addr1, addr2 : OM_Addr;
+	end record;
+
+	type Data_Cache_in is record
+		addr : OM_Addr;
+		wr, rd : std_ulogic;
+		data_in : Word;
+	end record;
+
+	type Data_Cache_out is record
+		data_out : Word;
 	end record;
 
 -- **** IF/ID ****

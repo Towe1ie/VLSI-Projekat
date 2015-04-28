@@ -11,6 +11,9 @@ entity CPU is
 		in_instr_cache_data : in Instr_Cache_data;
 		out_instr_cache_addr : out Instr_Cahce_addr;
 
+		in_data_cache : in Data_Cache_out;
+		out_data_cache : out Data_Cache_in;
+
 		clk, reset : in std_ulogic
 	);
 end entity;
