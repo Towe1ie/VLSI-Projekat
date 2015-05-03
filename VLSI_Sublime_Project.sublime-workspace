@@ -4,8 +4,24 @@
 		"selected_items":
 		[
 			[
+				"src1_",
+				"src1_addr"
+			],
+			[
+				"second",
+				"secondDecoded"
+			],
+			[
+				"src1",
+				"src1_addr"
+			],
+			[
+				"firStIn",
+				"first_instr"
+			],
+			[
 				"LOAD",
-				"LOAD_I"
+				"LOAD_STORE_Type"
 			],
 			[
 				"loadStore_",
@@ -30,10 +46,6 @@
 			[
 				"dcac",
 				"dcache_out"
-			],
-			[
-				"second",
-				"second_instr"
 			],
 			[
 				"in_instr",
@@ -90,10 +102,6 @@
 			[
 				"mem_add",
 				"mem_addr_reg"
-			],
-			[
-				"src1",
-				"src1_Value"
 			],
 			[
 				"mem_addr",
@@ -292,43 +300,19 @@
 	"buffers":
 	[
 		{
-			"file": "Code/Entities/load_store.vhd",
+			"file": "Code/Entities/branch.vhd",
 			"settings":
 			{
-				"buffer_size": 2965,
+				"buffer_size": 2068,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "Code/Entities/CPU.vhd",
+			"file": "Code/Packets/pkg_Functions.vhd",
 			"settings":
 			{
-				"buffer_size": 3886,
+				"buffer_size": 4081,
 				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "Code/Entities/WB_Stage.vhd",
-			"settings":
-			{
-				"buffer_size": 3277,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "Code/Entities/ID_Stage.vhd",
-			"settings":
-			{
-				"buffer_size": 7628,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "Code/Test/tb_test.vhd",
-			"settings":
-			{
-				"buffer_size": 1212,
-				"line_ending": "Unix"
 			}
 		},
 		{
@@ -343,7 +327,7 @@
 			"file": "Code/Packets/pkg_Declarations.vhd",
 			"settings":
 			{
-				"buffer_size": 3337,
+				"buffer_size": 3463,
 				"line_ending": "Windows"
 			}
 		},
@@ -351,7 +335,7 @@
 			"file": "Code/Packets/pkg_Components.vhd",
 			"settings":
 			{
-				"buffer_size": 3350,
+				"buffer_size": 3416,
 				"line_ending": "Windows"
 			}
 		}
@@ -409,25 +393,33 @@
 	],
 	"file_history":
 	[
-		"/C/Users/Nemanja/Desktop/VLSI/VLSI-Projekat/Code/Packets/pkg_Declarations.vhd",
+		"/C/Users/Nemanja/Desktop/VLSI/VLSI-Projekat/Code/ModelSim/testInstrukcije.txt",
+		"/C/Users/Nemanja/Desktop/VLSI/VLSI-Projekat/Code/Entities/CPU.vhd",
 		"/C/Users/Nemanja/Desktop/VLSI/VLSI-Projekat/Code/Entities/alu.vhd",
+		"/C/Users/Nemanja/Desktop/VLSI/VLSI-Projekat/Code/Entities/WB_Stage.vhd",
 		"/C/Users/Nemanja/Desktop/VLSI/VLSI-Projekat/Code/Entities/branch.vhd",
+		"/C/Users/Nemanja/Desktop/VLSI/VLSI-Projekat/Code/Entities/ID_Stage.vhd",
+		"/C/Users/Nemanja/Desktop/VLSI/VLSI-Projekat/Code/Entities/load_store.vhd",
+		"/C/Users/Nemanja/Desktop/VLSI/VLSI-Projekat/Code/ModelSim/dataMemory.txt",
+		"/C/Users/Nemanja/Desktop/vhdl/javni_test_inst_in.txt",
+		"/C/Users/Nemanja/Desktop/VLSI/VLSI-Projekat/Code/ModelSim/javni_test_data_in.txt",
+		"/C/Users/Nemanja/Desktop/VLSI/VLSI-Projekat/Code/Test/dataCache.vhd",
+		"/C/Users/Nemanja/Desktop/VLSI/VLSI-Projekat/Code/Test/tb_test.vhd",
+		"/C/Users/Nemanja/Desktop/VLSI/VLSI-Projekat/Code/ModelSim/javni_test_inst_in.txt",
+		"/C/Users/Nemanja/Desktop/vhdl/javni_test_data_in.txt",
+		"/D/Programiranje projekti/VHDL/VLSI_Projekat/code/ModelSimProjects/dataMemory.txt",
+		"/D/Programiranje projekti/VHDL/VLSI_Projekat/code/ModelSimProjects/testInstrukcije.txt",
+		"/C/Users/Nemanja/Desktop/VLSI/VLSI-Projekat/Code/Packets/pkg_Declarations.vhd",
 		"/E/Program Files (x86)/Aspyr/Guitar Hero III/DATA/MUSIC/Avalancha.fsb.xen",
 		"/E/Program Files (x86)/Aspyr/Guitar Hero III/DATA/MUSIC/avalancha.dat.xen",
 		"/D/Programi/Guitar Hero III Metallica ~PC~/Torrent downloaded from Demonoid.me.txt",
 		"/C/Users/Nemanja/Desktop/rumine.txt",
 		"/D/Programi/SONY Sound Forge Pro 11.0 build 234 (patch-keygen DI) [ChingLiu]/DI v2.3 Keygen and Patch/diginsan.nfo",
-		"/C/Users/Nemanja/Desktop/VLSI/VLSI-Projekat/Code/Test/tb_test.vhd",
-		"/C/Users/Nemanja/Desktop/VLSI/VLSI-Projekat/Code/Entities/CPU.vhd",
-		"/C/Users/Nemanja/Desktop/VLSI/VLSI-Projekat/Code/Test/dataCache.vhd",
 		"/C/Users/Nemanja/Desktop/VLSI/VLSI-Projekat/VLSI_Projekat_description.txt",
 		"/C/Users/Nemanja/Desktop/VLSI/VLSI-Projekat/Code/Packets/pkg_Functions.vhd",
 		"/C/Users/Nemanja/Desktop/VLSI/VLSI-Projekat/Code/Entities/IF_Stage.vhd",
-		"/C/Users/Nemanja/Desktop/VLSI/VLSI-Projekat/Code/ModelSim/testInstrukcije.txt",
 		"/C/Users/Nemanja/Desktop/VLSI/VLSI-Projekat/Code/Test/testInstrukcije.txt",
 		"/C/Users/Nemanja/Desktop/VLSI/VLSI-Projekat/Code/Packets/pkg_Components.vhd",
-		"/C/Users/Nemanja/Desktop/VLSI/VLSI-Projekat/Code/Entities/WB_Stage.vhd",
-		"/C/Users/Nemanja/Desktop/VLSI/VLSI-Projekat/Code/Entities/ID_Stage.vhd",
 		"/C/Users/Nemanja/Desktop/VLSI/VLSI-Projekat/Code/Packets/pkg_DecodeFunctions.vhd",
 		"/C/Users/Nemanja/Desktop/VLSI/VLSI-Projekat/Code/Entities/GPRFile.vhd",
 		"/C/Users/Nemanja/AppData/Roaming/Skype/My Skype Received Files/cover letter.txt",
@@ -569,53 +561,53 @@
 	"groups":
 	[
 		{
-			"selected": 3,
+			"selected": 1,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "Code/Entities/load_store.vhd",
+					"file": "Code/Entities/branch.vhd",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2965,
+						"buffer_size": 2068,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1743,
-								1743
+								1270,
+								1290
 							]
 						],
 						"settings":
 						{
-							"open_with_edit": true,
-							"syntax": "Packages/VHDL/Syntaxes/VHDL.tmLanguage"
+							"syntax": "Packages/VHDL/Syntaxes/VHDL.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 714.0,
+						"translation.y": 252.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "Code/Entities/CPU.vhd",
+					"file": "Code/Packets/pkg_Functions.vhd",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3886,
+						"buffer_size": 4081,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3403,
-								3422
+								4081,
+								4081
 							]
 						],
 						"settings":
@@ -623,98 +615,11 @@
 							"syntax": "Packages/VHDL/Syntaxes/VHDL.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
-						"translation.x": 0.0,
-						"translation.y": 882.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "Code/Entities/WB_Stage.vhd",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3277,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2493,
-								2493
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/VHDL/Syntaxes/VHDL.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 924.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "Code/Entities/ID_Stage.vhd",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 7628,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								6304,
-								6304
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/VHDL/Syntaxes/VHDL.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 2142.0,
+						"translation.x": -0.0,
+						"translation.y": 1300.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "Code/Test/tb_test.vhd",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1212,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								776,
-								776
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/VHDL/Syntaxes/VHDL.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
 					"type": "text"
 				}
 			]
@@ -724,7 +629,7 @@
 			"sheets":
 			[
 				{
-					"buffer": 5,
+					"buffer": 2,
 					"file": "Code/Packets/pkg_DecodeFunctions.vhd",
 					"semi_transient": false,
 					"settings":
@@ -736,8 +641,8 @@
 						"selection":
 						[
 							[
-								4840,
-								4840
+								1660,
+								1660
 							]
 						],
 						"settings":
@@ -746,27 +651,27 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 2081.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 6,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
-					"buffer": 6,
+					"buffer": 3,
 					"file": "Code/Packets/pkg_Declarations.vhd",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3337,
+						"buffer_size": 3463,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3324,
-								3324
+								2720,
+								2720
 							]
 						],
 						"settings":
@@ -776,27 +681,27 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 790.0,
+						"translation.y": 1171.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
-					"buffer": 7,
+					"buffer": 4,
 					"file": "Code/Packets/pkg_Components.vhd",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3350,
+						"buffer_size": 3416,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2095,
-								2105
+								677,
+								677
 							]
 						],
 						"settings":
@@ -805,10 +710,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 882.0,
+						"translation.y": 210.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 4,
 					"type": "text"
 				}
 			]
@@ -820,7 +725,7 @@
 	},
 	"input":
 	{
-		"height": 29.0
+		"height": 40.0
 	},
 	"layout":
 	{

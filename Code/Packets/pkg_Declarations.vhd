@@ -29,6 +29,9 @@ package Declarations is
 
 	constant DATA_CACHE_DELAY : natural := 3;
 	
+	constant instr_cache_file_name : string := "testInstrukcije.txt";
+	constant data_cache_file_name : string := "dataMemory.txt";
+
 -- **** Other ****
 	type Data_hazard_info is record
 		dst : GPR_addr;
@@ -106,9 +109,6 @@ package Declarations is
 	type EXE_Data_Hazard_Control is record
 		alu1_info, alu2_info, load_store_info : Data_hazard_info;
 	end record;
-
-
-
 
 -- **** WB/ID ****
 	type WB_Data_Hazard_Control is record

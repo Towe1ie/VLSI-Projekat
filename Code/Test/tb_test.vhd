@@ -17,13 +17,13 @@ architecture cpu_test_vhd_tst_arch of cpu_test_vhd_tst is
 	signal clk, reset, jump : std_ulogic;
 begin
 	instructionCache : Instruction_Cache
-		generic map ("testInstrukcije.txt")
+		generic map (instr_cache_file_name)
 		port map(out_data => instrCache_data,
 				in_addr => instrCache_addr,
 				in_load => reset);
 
 	dataCache : Data_Cache
-		generic map("dataMemory.txt", DATA_CACHE_DELAY)
+		generic map(data_cache_file_name, DATA_CACHE_DELAY)
 		port map
 		(
 			dcache_in => dataCache_in,

@@ -20,7 +20,9 @@ entity ID_Stage is
 
 		in_EXE_data_hazard_control : in EXE_Data_Hazard_Control;
 		in_WB_data_hazard_control : in WB_Data_Hazard_Control;
+
 		in_loadStoreBusy : in std_ulogic;
+		in_branch_busy : in std_ulogic;
 
 		first_instr, second_instr : out Decoded_Instruction;
 
@@ -49,27 +51,22 @@ begin
 	first <= buff(to_integer_unsigned(head));
 	second <= buff(to_integer_unsigned(headInc));
 
-	out_GPR_addr.addr1 <= get_reg_addr(first.raw_instr, 1);
-	out_GPR_addr.addr2 <= get_reg_addr(first.raw_instr, 2);
-	out_GPR_addr.addr3 <= get_reg_addr(second.raw_instr, 1);
-	out_GPR_addr.addr4 <= get_reg_addr(second.raw_instr, 2);
-
 	decode(first, firstDecoded.info);
 	decode(second, secondDecoded.info);
 
-	--firstDecoded.CSR <= in_CSR;
-	--firstReady <= '1';
+	out_GPR_addr.addr1 <= firstDecoded.info.src1_addr;
+	out_GPR_addr.addr2 <= firstDecoded.info.src2_addr;
+	out_GPR_addr.addr3 <= secondDecoded.info.src1_addr;
+	out_GPR_addr.addr4 <= secondDecoded.info.src2_addr;
+
 	firstDecoded.ready <= firstReady;
 	first_instr <= firstDecoded;
 
-	
-	--secondDecoded.CSR <= in_CSR;
-	--secondReady <= '1';
 	secondDecoded.ready <= secondReady;
 	second_instr <= secondDecoded;
 
 -- **** Data hazards logic ****
-	process(in_GPR_data, firstDecoded, secondDecoded, in_EXE_Data_Hazard_Control, in_WB_Data_Hazard_Control, in_CSR, in_loadStoreBusy)
+	process(in_GPR_data, firstDecoded, secondDecoded, in_EXE_Data_Hazard_Control, in_WB_Data_Hazard_Control, in_CSR, in_loadStoreBusy, in_branch_busy)
 		variable hazard_src1, hazard_src2, hazard_CSR, forwarded_src1, forwarded_src2, forwarded_CSR : boolean;
 		variable forwardValue : Word;
 		variable firstRdy_tmp : std_ulogic;
@@ -122,15 +119,14 @@ begin
 			firstRdy_tmp := '0';
 		end if;
 
-
-		if ((hazard_CSR and not forwarded_CSR) or firstDecoded.info.op = ERROR_I)
+		if (firstDecoded.info.op = STORE_I and in_branch_busy = '1')
 		then
 			firstRdy_tmp := '0';
 		end if;
 
-		if (firstDecoded.info.op = STOP_I)
+		if ((hazard_CSR and not forwarded_CSR) or firstDecoded.info.op = ERROR_I)
 		then
-			firstRdy_tmp := '1';
+			firstRdy_tmp := '0';
 		end if;
 
 		firstReady <= firstRdy_tmp;
@@ -195,6 +191,11 @@ begin
 		end if;
 
 		if (secondInstr_type = BRANCH_Type and in_loadStoreBusy = '1')
+		then
+			secondReady <= '0';
+		end if;
+
+		if (secondDecoded.info.op = STORE_I and (in_branch_busy = '1' or firstInstr_type = BRANCH_Type))
 		then
 			secondReady <= '0';
 		end if;

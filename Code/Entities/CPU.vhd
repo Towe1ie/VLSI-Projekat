@@ -32,7 +32,8 @@ architecture CPU_arch of CPU is
 	signal res1, res2 : Word;
 	signal WB_data_hazard_control_signal : WB_Data_Hazard_Control;
 	signal EXE_data_hazard_control_signal : EXE_Data_Hazard_Control;
-	signal loadStore_busy : std_ulogic;
+
+	signal loadStore_busy, branch_busy : std_ulogic;
 
 	signal alu1_WB_signal, alu2_WB_signal, br_WB_signal, loadStore_WB_signal : WB_Reg_Instr;
 	signal WB_GPR_signal : WB_GPR_out;
@@ -95,6 +96,7 @@ begin
 			in_WB_data_hazard_control => WB_data_hazard_control_signal,
 			in_EXE_data_hazard_control => EXE_data_hazard_control_signal,
 			in_loadStoreBusy => loadStore_busy,
+			in_branch_busy => branch_busy,
 			first_instr => first_instr,
 			second_instr => second_instr,
 			clk => clk,
@@ -125,6 +127,7 @@ begin
 			in_instr_first => first_instr,
 			in_instr_second => second_instr,
 			out_WB => br_WB_signal,
+			out_busy => branch_busy,
 			clk => clk,
 			flush => flush,
 			reset => reset);

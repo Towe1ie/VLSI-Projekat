@@ -13,6 +13,7 @@ entity Branch is
 		in_instr_first, in_instr_second : in Decoded_Instruction;
 
 		out_WB : out WB_Reg_Instr;
+		out_busy : out std_ulogic;
 
 		clk, flush, reset : std_ulogic
 	);
@@ -61,7 +62,7 @@ begin
 
 	cnd <= 	'1' when (op_reg = BEQ_I and CSR_reg(Z_pos) = '1') or
 				(op_reg = BGT_I and  (((CSR_reg(N_pos) xor CSR_reg(V_POS)) or CSR_reg(Z_POS)) = '0')) or
-				(op_reg = BHI_I and (CSR_reg(C_pos) = '0' or CSR_reg(Z_pos) = '0')) or
+				(op_reg = BHI_I and (CSR_reg(C_pos) or CSR_reg(Z_pos)) = '0') or
 				(op_reg = BAL_I) or
 				(op_reg = BLAL_I) else
 	   		'0';
@@ -75,4 +76,6 @@ begin
 	out_WB.cnd <= cnd;
 	out_WB.jmp_addr <= jmp_addr;
 	out_WB.pc <= pc_reg;
+
+	out_busy <= working;
 end architecture;

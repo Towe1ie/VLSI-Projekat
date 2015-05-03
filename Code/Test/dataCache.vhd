@@ -34,9 +34,9 @@ begin
 	dcache_out.data_out <= regs(to_integer_unsigned(dcache_in.addr)) when delayCnt_reg = 0 else
 						  (others => 'X');
 	
-	delayCnt_next <= delayCnt_reg - 1 when delayCnt_reg /= 0 else
-					 delay when (dcache_in.wr = '1' or dcache_in.rd = '1') and delayCnt_reg = 0 else
-					 delayCnt_reg;
+	delayCnt_next <= delayCnt_reg - 1 when delayCnt_reg /= 0 and (dcache_in.wr = '1' or dcache_in.rd = '1') else
+					 --delay when (dcache_in.wr = '1' or dcache_in.rd = '1') and delayCnt_reg = 0 else
+					 delay;
 
 	process (load, clk)
 		file loadFile : TEXT;

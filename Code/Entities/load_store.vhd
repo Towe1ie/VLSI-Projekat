@@ -63,7 +63,7 @@ begin
 	busy <= '1' when working = '1' and cnt_reg < dataCache_delay else
 			'0';
 
-	in_instr <= in_instr_first when in_instr_first.ready = '1' else
+	in_instr <= in_instr_first when in_instr_first.ready = '1' and get_instr_type(in_instr_first.info.op) = LOAD_STORE_Type else
 				in_instr_second;
 
 	op_next <= 	in_instr.info.op when busy = '0' else

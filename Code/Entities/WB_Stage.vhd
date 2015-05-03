@@ -51,6 +51,7 @@ begin
 	out_data_hazard_control.alu1_info.value <= alu1_reg.value;
 	out_data_hazard_control.alu1_info.CSR <= alu1_reg.CSR;
 	out_data_hazard_control.alu1_info.updateCSR <= alu1_reg.updateCSR;
+	out_data_hazard_control.alu1_info.elapsedTime <= 0;
 
 	out_data_hazard_control.alu2_info.valid <= alu2_reg.valid;
 	out_data_hazard_control.alu2_info.dst <= alu2_reg.dst;
@@ -58,6 +59,7 @@ begin
 	out_data_hazard_control.alu2_info.value <= alu2_reg.value;
 	out_data_hazard_control.alu2_info.CSR <= alu2_reg.CSR;
 	out_data_hazard_control.alu2_info.updateCSR <= alu2_reg.updateCSR;
+	out_data_hazard_control.alu2_info.elapsedTime <= 0;
 
 	out_data_hazard_control.loadStore_info.valid <= loadStore_reg.valid;
 	out_data_hazard_control.loadStore_info.dst <= loadStore_reg.dst;
@@ -65,17 +67,19 @@ begin
 	out_data_hazard_control.loadStore_info.value <= loadStore_reg.value;
 	out_data_hazard_control.loadStore_info.CSR <= (others => 'X');
 	out_data_hazard_control.loadStore_info.updateCSR <= '0';
+	out_data_hazard_control.loadStore_info.elapsedTime <= 0;
 
 	alu1_next <= in_alu1;
 	alu2_next <= in_alu2;
 	br_next <= in_br;
 	loadStore_next <= in_loadStore;
 
-	out_GPR.wrAlu1 <= alu1_reg.valid;
+	out_GPR.wrAlu1 <= 	'1' when alu1_reg.valid = '1' and alu1_reg.op /= CMP_I else
+						'0';
 	out_GPR.alu1_addr <= alu1_reg.dst;
 	out_GPR.alu1_value <= alu1_reg.value;
 
-	out_GPR.wrAlu2 <= 	'1' when alu2_reg.valid = '1'  and jump = '0' else
+	out_GPR.wrAlu2 <= 	'1' when alu2_reg.valid = '1' and alu2_reg.op /= CMP_I and jump = '0' else
 						'0';
 	out_GPR.alu2_addr <= alu2_reg.dst;
 	out_GPR.alu2_value <= alu2_reg.value;
@@ -98,13 +102,13 @@ begin
 	begin
 		out_CSR.wrCSR <= '0';
 		out_CSR.CSR <= (others => 'X');
-		if (alu1_reg.updateCSR = '1')
+		if (alu1_reg.updateCSR = '1' and alu1_reg.valid = '1')
 		then
 			out_CSR.wrCSR <= '1';
 			out_CSR.CSR <= alu1_reg.CSR;
 		end if;
 
-		if (alu2_reg.updateCSR = '1')
+		if (alu2_reg.updateCSR = '1' and alu2_reg.valid = '1')
 		then
 			out_CSR.wrCSR <= '1';
 			out_CSR.CSR <= alu2_reg.CSR;

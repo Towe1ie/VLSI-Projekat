@@ -49,7 +49,9 @@ package Components is
 
 			in_EXE_data_hazard_control : in EXE_Data_Hazard_Control;
 			in_WB_data_hazard_control : in WB_Data_Hazard_Control;
+
 			in_loadStoreBusy : in std_ulogic;
+			in_branch_busy : in std_ulogic;
 
 			first_instr, second_instr : out Decoded_Instruction;
 
@@ -75,6 +77,7 @@ package Components is
 			in_instr_first, in_instr_second : in Decoded_Instruction;
 
 			out_WB : out WB_Reg_Instr;
+			out_busy : out std_ulogic;
 
 			clk, flush, reset : std_ulogic
 		);
