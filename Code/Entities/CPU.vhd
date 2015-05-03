@@ -32,8 +32,9 @@ architecture CPU_arch of CPU is
 	signal res1, res2 : Word;
 	signal WB_data_hazard_control_signal : WB_Data_Hazard_Control;
 	signal EXE_data_hazard_control_signal : EXE_Data_Hazard_Control;
+	signal loadStore_busy : std_ulogic;
 
-	signal alu1_WB_signal, alu2_WB_signal, br_WB_signal : WB_Reg_Instr;
+	signal alu1_WB_signal, alu2_WB_signal, br_WB_signal, loadStore_WB_signal : WB_Reg_Instr;
 	signal WB_GPR_signal : WB_GPR_out;
 
 	signal jumpAddr : OM_Addr;
@@ -92,7 +93,8 @@ begin
 			in_GPR_data => GPR_ID_data_signal,
 			in_CSR => CSR_reg,
 			in_WB_data_hazard_control => WB_data_hazard_control_signal,
-			in_EXE_data_hazard_control => EXE_data_hazard_control_signal,			
+			in_EXE_data_hazard_control => EXE_data_hazard_control_signal,
+			in_loadStoreBusy => loadStore_busy,
 			first_instr => first_instr,
 			second_instr => second_instr,
 			clk => clk,
@@ -100,30 +102,43 @@ begin
 			flush => flush);
 
 -- **** EXE Stage ****
-	ALU_1 : ALU
+	ALU_1_Unit : ALU
 		port map(
 			in_instr => first_instr,
 			out_data_hazard_info => EXE_data_hazard_control_signal.alu1_info,
 			out_wb => alu1_WB_signal,
 			clk => clk,
 			flush => flush,
-			reset => reset
-			);
+			reset => reset);
 
-	ALU_2 : ALU
+	ALU_2_Unit : ALU
 		port map(
 			in_instr => second_instr,
 			out_data_hazard_info => EXE_data_hazard_control_signal.alu2_info,
 			out_wb => alu2_WB_signal,
 			clk => clk,
 			flush => flush,
-			reset => reset
-			);
-	BR : Branch
+			reset => reset);
+
+	Branch_Unit : Branch
 		port map(
 			in_instr_first => first_instr,
 			in_instr_second => second_instr,
 			out_WB => br_WB_signal,
+			clk => clk,
+			flush => flush,
+			reset => reset);
+
+	LOAD_STORE_UNIT : Load_Store
+		generic map(DATA_CACHE_DELAY)
+		port map(
+			in_instr_first => first_instr,
+			in_instr_second => second_instr,
+			dcache_in => in_data_cache,
+			dcache_out => out_data_cache,
+			out_data_hazard_info => EXE_Data_Hazard_Control_signal.load_Store_info,
+			out_busy => loadStore_busy,
+			out_WB => loadStore_WB_signal,
 			clk => clk,
 			flush => flush,
 			reset => reset);
@@ -134,6 +149,7 @@ begin
 			in_alu1 => alu1_WB_signal,
 			in_alu2 => alu2_WB_signal,
 			in_br => br_WB_signal,
+			in_loadStore => loadStore_WB_signal,
 			out_data_hazard_control => WB_data_hazard_control_signal,
 			out_CSR => WB_CSR_signal,
 			out_flush => flush,

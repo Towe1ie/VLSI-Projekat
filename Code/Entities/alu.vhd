@@ -132,6 +132,7 @@ begin
 	out_data_hazard_info.CSR 	<= newCSR;
 	out_data_hazard_info.updateCSR <= '1';
 	out_data_hazard_info.canForward <= '1';
+	out_data_hazard_info.elapsedTime <= 0;
 
 	out_WB.value <= result;
 	out_WB.op 	<= op_reg;

@@ -8,7 +8,7 @@ use work.Functions.all;
 entity WB_Stage is
 	port
 	(
-		in_alu1, in_alu2, in_br : in WB_Reg_Instr;
+		in_alu1, in_alu2, in_br, in_loadStore : in WB_Reg_Instr;
 
 		out_data_hazard_control : out WB_Data_Hazard_Control;
 		out_GPR : out WB_GPR_out;
@@ -23,7 +23,7 @@ entity WB_Stage is
 end entity;
 
 architecture WB_Stage_arch of WB_Stage is 
-	signal alu1_reg, alu1_next, alu2_reg, alu2_next, br_reg, br_next : WB_Reg_Instr;
+	signal alu1_reg, alu1_next, alu2_reg, alu2_next, br_reg, br_next, loadStore_reg, loadStore_next : WB_Reg_Instr;
 	signal jump : std_ulogic;
 begin
 	process(clk)
@@ -35,10 +35,12 @@ begin
 				alu1_reg.valid <= '0';
 				alu2_reg.valid <= '0';
 				br_reg.valid <= '0';
+				loadStore_reg.valid <= '0';
 			else
 				alu1_reg <= alu1_next;
 				alu2_reg <= alu2_next;
 				br_reg <= br_next;
+				loadStore_reg <= loadStore_next;
 			end if;
 		end if;
 	end process;
@@ -57,19 +59,19 @@ begin
 	out_data_hazard_control.alu2_info.CSR <= alu2_reg.CSR;
 	out_data_hazard_control.alu2_info.updateCSR <= alu2_reg.updateCSR;
 
-	out_data_hazard_control.loadStore_info.valid <= '0';
-	out_data_hazard_control.loadStore_info.dst <= (others => '0');
-	out_data_hazard_control.loadStore_info.canForward <= '0';
-	out_data_hazard_control.loadStore_info.value <= (others => '0');
-	out_data_hazard_control.loadStore_info.CSR <= (others => '0');
+	out_data_hazard_control.loadStore_info.valid <= loadStore_reg.valid;
+	out_data_hazard_control.loadStore_info.dst <= loadStore_reg.dst;
+	out_data_hazard_control.loadStore_info.canForward <= '1';
+	out_data_hazard_control.loadStore_info.value <= loadStore_reg.value;
+	out_data_hazard_control.loadStore_info.CSR <= (others => 'X');
 	out_data_hazard_control.loadStore_info.updateCSR <= '0';
 
 	alu1_next <= in_alu1;
 	alu2_next <= in_alu2;
 	br_next <= in_br;
+	loadStore_next <= in_loadStore;
 
-	out_GPR.wrAlu1 <= '1' when alu1_reg.valid = '1' else
-							'0';
+	out_GPR.wrAlu1 <= alu1_reg.valid;
 	out_GPR.alu1_addr <= alu1_reg.dst;
 	out_GPR.alu1_value <= alu1_reg.value;
 
@@ -78,9 +80,10 @@ begin
 	out_GPR.alu2_addr <= alu2_reg.dst;
 	out_GPR.alu2_value <= alu2_reg.value;
 
-	out_GPR.wrLoadStore <= '0'; -- Privremeno
-	out_GPR.loadStore_addr <= (others => '0');
-	out_GPR.loadStore_value <= (others => '1');
+	out_GPR.wrLoadStore <= 	'1' when loadStore_reg.valid = '1' and loadStore_reg.op = LOAD_I else
+							'0';
+	out_GPR.loadStore_addr <= loadStore_reg.dst;
+	out_GPR.loadStore_value <= loadStore_reg.value;
 
 	out_GPR.wrBr <= '1' when br_reg.valid = '1' and br_reg.op = BLAL_I else
 					'0';

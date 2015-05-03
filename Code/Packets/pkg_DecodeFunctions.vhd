@@ -38,7 +38,13 @@ package body DecodeFunctions is
 		op := decode_oc(w.raw_instr);
 		instr.op <= op;
 		instr.src1_addr <= get_reg_addr(w.raw_instr, 1);
-		instr.src2_addr <= get_reg_addr(w.raw_instr, 2);
+		if (op = STORE_I)
+		then
+			-- **** (Tekst projekta) Kod store instrukcije podatak iz R3 se smesta u memoriju 
+			instr.src2_addr <= get_reg_addr(w.raw_instr, 0);
+		else
+			instr.src2_addr <= get_reg_addr(w.raw_instr, 2);
+		end if;
 		instr.dst_addr <= get_reg_addr(w.raw_instr, 0);
 		instr.imm <= ext_imm(w.raw_instr);
 		instr.jmp_offset <= ext_jmpOffset(w.raw_instr);
@@ -227,7 +233,19 @@ package body DecodeFunctions is
 			end if;
 		end if;
 
-		-- srediti redosled kada se bude radila LoadStore jedinica
+		-- **** Ako je instrukcija u LS jedinici samo jedan takt proverava se redosled ALU 1, LS, ALU 2
+		-- **** U suprotnom LS, ALU 1, ALU 2
+		if (src = exe_info.load_store_info.dst and exe_info.load_store_info.valid = '1' and exe_info.load_store_info.elapsedTime > 0)
+		then
+			hazard := true;
+			forwarded := false;
+			if (exe_info.load_store_info.canForward = '1')
+			then
+				forwarded := true;
+				forw_value := exe_info.load_store_info.value;
+			end if;
+		end if;
+
 		if (src = exe_info.alu1_info.dst and exe_info.alu1_info.valid = '1')
 		then
 			hazard := true;
@@ -239,7 +257,7 @@ package body DecodeFunctions is
 			end if;
 		end if;
 
-		if (src = exe_info.load_store_info.dst and exe_info.load_store_info.valid = '1')
+		if (src = exe_info.load_store_info.dst and exe_info.load_store_info.valid = '1' and exe_info.load_store_info.elapsedTime = 0)
 		then
 			hazard := true;
 			forwarded := false;

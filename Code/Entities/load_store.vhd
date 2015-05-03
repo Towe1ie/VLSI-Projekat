@@ -17,8 +17,9 @@ entity Load_Store is
 		dcache_in : in Data_Cache_out;
 		dcache_out : out Data_Cache_in;
 
+		out_data_hazard_info : out Data_hazard_info;
+
 		out_busy : out std_ulogic;
-		elapsed : out natural;
 		out_WB : out WB_Reg_Instr;
 
 		clk, flush, reset : std_ulogic
@@ -35,7 +36,7 @@ architecture Load_Store_arch of Load_Store is
 	signal cnt_reg, cnt_next : natural;
 
 	signal in_instr : Decoded_Instruction;
-	signal working : std_ulogic;
+	signal working, busy : std_ulogic;
 begin
 
 	process(clk, flush, reset)
@@ -52,35 +53,38 @@ begin
 				wr_value_reg <= wr_value_next;
 				ready_reg <= ready_next;
 				dst_reg <= dst_next;
+				cnt_reg <= cnt_next;
 			end if;
 		end if;
 	end process;
 
-	working <= 	'1' when ready_reg = '1' and cnt_reg < dataCache_delay and get_instr_type(op_reg) = LOAD_STORE_Type else
+	working <= 	'1' when ready_reg = '1' and get_instr_type(op_reg) = LOAD_STORE_Type else
 				'0';
+	busy <= '1' when working = '1' and cnt_reg < dataCache_delay else
+			'0';
 
 	in_instr <= in_instr_first when in_instr_first.ready = '1' else
 				in_instr_second;
 
-	op_next <= 	in_instr.info.op when working = '0' else
+	op_next <= 	in_instr.info.op when busy = '0' else
 				op_reg;
-	pc_next	<=	in_instr.info.pc when working = '0' else
+	pc_next	<=	in_instr.info.pc when busy = '0' else
 				pc_reg;
-	dst_next <=	in_instr.info.dst_addr when working = '0' else
+	dst_next <=	in_instr.info.dst_addr when busy = '0' else
 				dst_reg;
-	mem_addr_next <= in_instr.src1_Value when working = '0' else
+	mem_addr_next <= in_instr.src1_Value(OM_ADDR_SIZE - 1 downto 0) when busy = '0' else
 					mem_addr_reg;
-	wr_value_next	<= 	in_instr.src2_Value when working = '0' else
+	wr_value_next	<= 	in_instr.src2_Value when busy = '0' else
 					wr_value_reg;
-	ready_next	<= 	in_instr.ready when working = '0' else
+	ready_next	<= 	in_instr.ready when busy = '0' else
 					ready_reg;
-	cnt_next 	<= 	0 when working = '0' else
-					cnt_reg + 1 when working = '1' and cnt_reg < dataCache_delay else
+	cnt_next 	<= 	0 when busy = '0' else
+					cnt_reg + 1 when busy = '1' else
 					cnt_reg;
 
-	dcache_out.wr <= '1' when op_reg = STORE_I and working = '1' else
+	dcache_out.wr <= '1' when op_reg = STORE_I and busy = '1' else
 					 '0';
-	dcache_out.rd <= '1' when op_reg = LOAD_I and working = '1' else
+	dcache_out.rd <= '1' when op_reg = LOAD_I and busy = '1' else
 					 '0';
 	dcache_out.data_in <= wr_value_reg;
 	dcache_out.addr <= mem_addr_reg;
@@ -88,14 +92,22 @@ begin
 	out_WB.value <= dcache_in.data_out;
 	out_WB.op <= op_reg;
 	out_WB.dst <= dst_reg;
-	out_wb.valid <= '1' when ready_reg = '1' and cnt_reg = dataCache_delay and get_instr_type(op_reg) = LOAD_STORE_Type else
-					'0';
+	out_wb.valid <= working and not busy;
 	out_wb.CSR <= (others => 'X');
 	out_wb.updateCSR <= '0';
 	out_wb.cnd <= 'X';
 	out_wb.jmp_addr <= (others => 'X');
 	out_wb.pc <= pc_reg;
 
-	elapsed <= cnt_reg;
-	out_busy <= working;
+-- **** Data hazard signals ****
+	out_data_hazard_info.dst <= dst_reg;
+	out_data_hazard_info.valid <= working;
+	out_data_hazard_info.value <= dcache_in.data_out;
+	out_data_hazard_info.CSR <= (others => 'X');
+	out_data_hazard_info.updateCSR <= '0';
+	out_data_hazard_info.canForward <= 	'1' when cnt_reg = dataCache_delay else
+										'0';
+	out_data_hazard_info.elapsedTime <= cnt_reg;
+
+	out_busy <= busy;
 end architecture;

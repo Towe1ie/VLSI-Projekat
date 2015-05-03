@@ -37,6 +37,7 @@ package Declarations is
 		CSR : Word;
 		updateCSR : std_ulogic;
 		canForward : std_ulogic;
+		elapsedTime : natural;
 	end record;
 
 -- **** Caches ****

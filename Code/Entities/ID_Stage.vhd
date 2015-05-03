@@ -20,6 +20,7 @@ entity ID_Stage is
 
 		in_EXE_data_hazard_control : in EXE_Data_Hazard_Control;
 		in_WB_data_hazard_control : in WB_Data_Hazard_Control;
+		in_loadStoreBusy : in std_ulogic;
 
 		first_instr, second_instr : out Decoded_Instruction;
 
@@ -68,11 +69,12 @@ begin
 	second_instr <= secondDecoded;
 
 -- **** Data hazards logic ****
-	process(in_GPR_data, firstDecoded, secondDecoded, in_EXE_Data_Hazard_Control, in_WB_Data_Hazard_Control, in_CSR)
+	process(in_GPR_data, firstDecoded, secondDecoded, in_EXE_Data_Hazard_Control, in_WB_Data_Hazard_Control, in_CSR, in_loadStoreBusy)
 		variable hazard_src1, hazard_src2, hazard_CSR, forwarded_src1, forwarded_src2, forwarded_CSR : boolean;
 		variable forwardValue : Word;
 		variable firstRdy_tmp : std_ulogic;
-		variable second_to_first_dependance, bothBranch : boolean;
+		variable second_to_first_dependance, bothBranch, bothLoad, loadStoreBusy : boolean;
+		variable firstInstr_type, secondInstr_type : Instr_type;
 	begin
 	-- First instruction
 		firstReady <= '1';
@@ -84,8 +86,9 @@ begin
 		hazard_src2 := false;
 		hazard_CSR := false;
 		forwarded_CSR := false;
+		firstInstr_type := get_instr_type(firstDecoded.info.op);
 
-		if (not isImmed(firstDecoded.info.op) and not (get_instr_type(firstDecoded.info.op) = BRANCH_Type))
+		if (not isImmed(firstDecoded.info.op) and not (firstInstr_type = BRANCH_Type))
 		then
 			resolve_Data_Hazard(firstDecoded.info.src1_addr, in_EXE_Data_Hazard_Control, in_WB_Data_Hazard_Control, hazard_src1, forwardValue, forwarded_src1);
 			if (forwarded_src1)
@@ -114,6 +117,12 @@ begin
 			end if;
 		end if;
 
+		if ((firstInstr_type = LOAD_STORE_Type or firstInstr_type = BRANCH_Type) and in_loadStoreBusy = '1')
+		then
+			firstRdy_tmp := '0';
+		end if;
+
+
 		if ((hazard_CSR and not forwarded_CSR) or firstDecoded.info.op = ERROR_I)
 		then
 			firstRdy_tmp := '0';
@@ -136,8 +145,9 @@ begin
 		hazard_src2 := false;
 		hazard_CSR := false;
 		forwarded_CSR := false;
+		secondInstr_type := get_instr_type(secondDecoded.info.op);
 
-		if (not isImmed(secondDecoded.info.op) and not (get_instr_type(secondDecoded.info.op) = BRANCH_Type))
+		if (not isImmed(secondDecoded.info.op) and not (secondInstr_type = BRANCH_Type))
 		then
 			resolve_Data_Hazard(secondDecoded.info.src1_addr, in_EXE_Data_Hazard_Control, in_WB_Data_Hazard_Control, hazard_src1, forwardValue, forwarded_src1);
 			if (forwarded_src1)
@@ -176,9 +186,15 @@ begin
 			end if;
 		end if;
 
-		bothBranch := get_instr_type(secondDecoded.info.op) = BRANCH_Type and get_instr_type(firstDecoded.info.op) = BRANCH_Type;
+		bothBranch :=secondInstr_type = BRANCH_Type and firstInstr_type = BRANCH_Type;
+		bothLoad := secondInstr_type = LOAD_STORE_Type and firstInstr_type = LOAD_STORE_Type;
 
-		if ((hazard_CSR and not forwarded_CSR) or second_to_first_dependance or secondDecoded.info.op = ERROR_I or bothBranch or firstRdy_tmp = '0')
+		if ((hazard_CSR and not forwarded_CSR) or second_to_first_dependance or secondDecoded.info.op = ERROR_I or bothBranch or bothLoad or firstRdy_tmp = '0')
+		then
+			secondReady <= '0';
+		end if;
+
+		if (secondInstr_type = BRANCH_Type and in_loadStoreBusy = '1')
 		then
 			secondReady <= '0';
 		end if;

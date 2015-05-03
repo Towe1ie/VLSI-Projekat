@@ -49,6 +49,7 @@ package Components is
 
 			in_EXE_data_hazard_control : in EXE_Data_Hazard_Control;
 			in_WB_data_hazard_control : in WB_Data_Hazard_Control;
+			in_loadStoreBusy : in std_ulogic;
 
 			first_instr, second_instr : out Decoded_Instruction;
 
@@ -79,10 +80,31 @@ package Components is
 		);
 	end component;
 
+	component Load_Store is 
+		generic
+		(
+			dataCache_delay : natural := 3
+		);
+		port
+		(
+			in_instr_first, in_instr_second : in Decoded_Instruction;
+
+			dcache_in : in Data_Cache_out;
+			dcache_out : out Data_Cache_in;
+
+			out_data_hazard_info : out Data_hazard_info;
+
+			out_busy : out std_ulogic;
+			out_WB : out WB_Reg_Instr;
+
+			clk, flush, reset : std_ulogic
+		);
+	end component;
+
 	component WB_Stage is
 		port
 		(
-			in_alu1, in_alu2, in_br : in WB_Reg_Instr;
+			in_alu1, in_alu2, in_br, in_loadStore : in WB_Reg_Instr;
 
 			out_data_hazard_control : out WB_Data_Hazard_Control;
 			out_GPR : out WB_GPR_out;
