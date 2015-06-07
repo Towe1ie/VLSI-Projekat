@@ -74,17 +74,22 @@ begin
 		variable firstInstr_type, secondInstr_type : Instr_type;
 	begin
 	-- First instruction
-		firstReady <= '1';
-		firstRdy_tmp := '1';
-		firstDecoded.src1_Value <= in_GPR_data.dataOut1;
-		firstDecoded.src2_Value <= in_GPR_data.dataOut2;
+		-- postavljamo sve signale na podrazumevane vrednosti da ne bi doslo do lecovanja
+		firstReady <= '1'; -- pretpostavljamo da ce biti ready instrukcija, pa ako shvatimo da nije ready promenicemo na 0
+		firstRdy_tmp := '1'; -- privremena PROMENLJIVA za racunanje finalne vrednosti za ready, na kraju svih racunanja ce biti prosledjena u firstReady
+							 -- mora promenljiva jer se promena signala vidi tek kad se zavrsi proces
+		firstDecoded.src1_Value <= in_GPR_data.dataOut1; -- pretpostavljamo da nece biti hazarda pa prosledjujemo vrednosti iz registara.
+		firstDecoded.src2_Value <= in_GPR_data.dataOut2; -- ako shvatimo suprotno, promenicemo signal koji upisujemo u value
 		firstDecoded.CSR <= in_CSR;
-		hazard_src1 := false;
+		hazard_src1 := false; -- oznacava da li je doslo do hazarda
 		hazard_src2 := false;
 		hazard_CSR := false;
-		forwarded_CSR := false;
+		forwarded_CSR := false; -- oznacava da li je uspeo da se prosledi podatak u slucaju da je bilo hazarda
 		firstInstr_type := get_instr_type(firstDecoded.info.op);
 
+		-- provera da li se desio hazard na operandima
+		-- ako su immed ili branch ne moze se desiti data hazard na operandima
+		-- immed inherentno ima operand u instrukciji, a branch nema operande (ne mesati sa CSR, na njemu se moze desiti hazard kod Brancha ali to se proverava kasnije)
 		if (not isImmed(firstDecoded.info.op) and not (firstInstr_type = BRANCH_Type))
 		then
 			resolve_Data_Hazard(firstDecoded.info.src1_addr, in_EXE_Data_Hazard_Control, in_WB_Data_Hazard_Control, hazard_src1, forwardValue, forwarded_src1);
@@ -105,6 +110,8 @@ begin
 			end if;
 		end if;
 
+		-- provera da li se desio hazard na CSR registru
+		-- za instrukcije koje ne koriste CSR ostace podrazumevana vrednost za hazard_CSR = false
 		if (firstDecoded.info.need_CSR = '1')
 		then
 			resolve_Data_Hazard_CSR(in_EXE_Data_Hazard_Control, in_WB_Data_Hazard_Control, hazard_CSR, forwardValue, forwarded_CSR);
@@ -114,11 +121,17 @@ begin
 			end if;
 		end if;
 
+		-- load ne moze da predje u EXE ako je zauzeta LoadStore funkcionalna jedinica
+		-- branchovima ne dozvoljavamo da preskoce LoadStore instrukcije
 		if ((firstInstr_type = LOAD_STORE_Type or firstInstr_type = BRANCH_Type) and in_loadStoreBusy = '1')
 		then
 			firstRdy_tmp := '0';
 		end if;
 
+		-- ne dozvoljavamo da store zapocne upis ako postoji instrukcija u Branch jedinici
+		-- problem bi nastao ako bi se ispostavilo da je branch ispunjen 
+		-- (a to ce se znati tek u sledecem taktu kada instrukcija izadje iz Branch jedinice) 
+		-- sto implicira da store koji je posle njega ne treba da se izvrsi, a u tom trenutku bi vec poceo izvrsavanje
 		if (firstDecoded.info.op = STORE_I and in_branch_busy = '1')
 		then
 			firstRdy_tmp := '0';
@@ -129,9 +142,11 @@ begin
 			firstRdy_tmp := '0';
 		end if;
 
+		-- upis finalne vrednosti u signal
 		firstReady <= firstRdy_tmp;
 
 	-- Second instruction
+		-- slicno kao i za prvu instrukciju samo se jos dodatno mora proveriti da li druga instrukcija zavisi od prve
 		secondReady <= '1';
 		secondDecoded.src1_Value <= in_GPR_data.dataOut3;
 		secondDecoded.src2_Value <= in_GPR_data.dataOut4;
@@ -157,6 +172,7 @@ begin
 				secondDecoded.src2_Value <= forwardValue;
 			end if;
 
+			-- ukoliko druga instrukcija kao izvorisni koristi neki registar koji je prvoj destinacioni onda ce nastati hazard
 			if (secondDecoded.info.src1_addr = firstDecoded.info.dst_addr or (secondDecoded.info.src2_addr = firstDecoded.info.dst_addr and not useOneOperand(firstDecoded.info.op)))
 			then
 				second_to_first_dependance := true;
@@ -176,12 +192,15 @@ begin
 				secondDecoded.CSR <= forwardValue;
 			end if;
 
+			-- dodatna provera da li i prva koristi CSR, jer i onda nastaje hazard
 			if (firstDecoded.info.updateCSR = '1')
 			then
 				second_to_first_dependance := true;
 			end if;
 		end if;
 
+		-- ako su obe instrukcije Branch ili LoadStore onda ih ne mozemo obe pustiti u EXE
+		-- jer imamo samo po jednu funkcionalnu jedinicu za te operacije
 		bothBranch :=secondInstr_type = BRANCH_Type and firstInstr_type = BRANCH_Type;
 		bothLoad := secondInstr_type = LOAD_STORE_Type and firstInstr_type = LOAD_STORE_Type;
 
@@ -207,11 +226,12 @@ begin
 	end process;
 
 -- **** Other ****
+	-- signali za vadjenje instrukcija iz bafera
 	take1 <= 	'1' when firstReady = '1' and secondReady = '0' else
 				'0';
 	take2 <=	'1' when firstReady = '1' and secondReady = '1' else
 				'0';
-
+	-- instanciranje kontrolera za bafer
 	fifoControler : FIFO_Controler
 		generic map (IF_ID_BUFFER_ADDR_SIZE)
 		port map(
@@ -231,6 +251,7 @@ begin
 			clk => clk 
 			);
 
+	-- logika za bafer
 	process(clk)
 	begin
 		if (rising_edge(clk))
