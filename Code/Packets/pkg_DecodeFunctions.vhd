@@ -235,7 +235,7 @@ package body DecodeFunctions is
 
 		-- **** Ako je instrukcija u LS jedinici samo jedan takt proverava se redosled ALU 1, LS, ALU 2
 		-- **** U suprotnom LS, ALU 1, ALU 2
-		if (src = exe_info.load_store_info.dst and exe_info.load_store_info.valid = '1' and exe_info.load_store_info.elapsedTime > 0)
+		if (src = exe_info.load_store_info.dst and exe_info.load_store_info.valid = '1')-- and exe_info.load_store_info.elapsedTime > 0)
 		then
 			hazard := true;
 			forwarded := false;
@@ -257,16 +257,16 @@ package body DecodeFunctions is
 			end if;
 		end if;
 
-		if (src = exe_info.load_store_info.dst and exe_info.load_store_info.valid = '1' and exe_info.load_store_info.elapsedTime = 0)
-		then
-			hazard := true;
-			forwarded := false;
-			if (exe_info.load_store_info.canForward = '1')
-			then
-				forwarded := true;
-				forw_value := exe_info.load_store_info.value;
-			end if;
-		end if;
+		--if (src = exe_info.load_store_info.dst and exe_info.load_store_info.valid = '1' and exe_info.load_store_info.elapsedTime = 0)
+		--then
+		--	hazard := true;
+		--	forwarded := false;
+		--	if (exe_info.load_store_info.canForward = '1')
+		--	then
+		--		forwarded := true;
+		--		forw_value := exe_info.load_store_info.value;
+		--	end if;
+		--end if;
 
 		if (src = exe_info.alu2_info.dst and exe_info.alu2_info.valid = '1')
 		then
@@ -324,17 +324,6 @@ package body DecodeFunctions is
 		end if;
 
 		-- srediti redosled kada se bude radila LoadStore jedinica
-		if (exe_info.alu1_info.updateCSR = '1' and exe_info.alu1_info.valid = '1')
-		then
-			hazard := true;
-			forwarded := false;
-			if (exe_info.alu1_info.canForward = '1')
-			then
-				forwarded := true;
-				forw_value := exe_info.alu1_info.CSR;
-			end if;
-		end if;
-
 		if (exe_info.load_store_info.updateCSR = '1' and exe_info.load_store_info.valid = '1')
 		then
 			hazard := true;
@@ -343,6 +332,17 @@ package body DecodeFunctions is
 			then
 				forwarded := true;
 				forw_value := exe_info.load_store_info.CSR;
+			end if;
+		end if;
+		
+		if (exe_info.alu1_info.updateCSR = '1' and exe_info.alu1_info.valid = '1')
+		then
+			hazard := true;
+			forwarded := false;
+			if (exe_info.alu1_info.canForward = '1')
+			then
+				forwarded := true;
+				forw_value := exe_info.alu1_info.CSR;
 			end if;
 		end if;
 
